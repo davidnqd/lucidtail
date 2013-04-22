@@ -1,0 +1,157 @@
+<!doctype html>
+<!--
+		lucidGREP - Simple web.ui for text files
+		Copyright (C) 2013	David Duong
+
+		https://github.com/davidnqd/lucidGREP
+
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU Affero General Public License as published by
+		the Free Software Foundation, either version 3 of the License, or
+		(at your option) any later version.
+
+		This program is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+		GNU Affero General Public License for more details.
+
+		You should have received a copy of the GNU Affero General Public License
+		along with this program.	If not, see <http://www.gnu.org/licenses/>.
+--> 
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>lucidGREP</title>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+	<link rel="stylesheet" href="style.css" />
+	<script src="LogEventHandler.js"></script>
+	<script src="config.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	$(function() {
+		var lucidGrep = {
+			tail: new LogEventHandler($('#tail-results'), window.llConfig),
+			socket: io.connect()
+		};
+		lucidGrep.socket.on('meta', function (evt) {
+			console.log('In: meta', evt);
+		});
+		lucidGrep.socket.on('tail', function (evt) {
+			console.log('In: tail', evt);
+			for (var i = 0; i < evt.length; i++) {
+				lucidGrep.tail.handleEvent(evt[i]);
+			}
+		});
+
+		$( "#tabs" ).tabs().css( "border", "none" );
+		$( "#tail-tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+		$( "#tail-tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+		$( "#grep-tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+		$( "#grep-tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+
+		$(window).keydown(function (e) {
+			if (e.metaKey && e.which == 70) {
+				console.log(e);
+			}
+		});
+
+		$( "#tail-filter-text" ).change(function () {
+			var value = $(this).val();
+			$('#tail-results .result').hide();
+		});
+
+		function split( val ) {
+		  return val.split( /,\s*/ );
+		}
+		function extractLast( term ) {
+		  return split( term ).pop();
+		}
+
+		$( "#tail-sources" )
+		  // don't navigate away from the field on tab when selecting an item
+		  .bind( "keydown", function( event ) {
+			if ( event.keyCode === $.ui.keyCode.TAB &&
+				$( this ).data( "ui-autocomplete" ).menu.active ) {
+			  event.preventDefault();
+			}
+		  })
+		  .autocomplete({
+			minLength: 0,
+			source: function( request, response ) {
+			  // delegate back to autocomplete, but extract the last term
+			  response( $.ui.autocomplete.filter(
+				availableTags, extractLast( request.term ) ) );
+			},
+			focus: function() {
+			  // prevent value inserted on focus
+			  return false;
+			},
+			select: function( event, ui ) {
+			  var terms = split( this.value );
+			  // remove the current input
+			  terms.pop();
+			  // add the selected item
+			  terms.push( ui.item.value );
+			  // add placeholder to get the comma-and-space at the end
+			  terms.push( "" );
+			  this.value = terms.join( ", " );
+			  return false;
+			}
+		  });
+
+
+	});
+	</script>
+</head>
+<body>
+ 
+<div id="tabs">
+	<ul>
+		<li><a href="#tail-tab">Tail</a></li>
+		<li><a href="#grep-tab">Grep</a></li>
+	</ul>
+	<div id="tail-tab">
+		<div id="tail-tabs">
+			<ul>
+				<li><a href="#tail-about-tab">Tail</a></li>
+				<li><a href="#tail-highlight-tab">Highlight</a></li>
+				<li><a href="#tail-filter-tab">Filter</a></li>
+			</ul>
+			<div id="tail-about-tab">
+				<p>This tab displays log events in real time.</p>
+				<label for="tail-sources">Sources: </label>
+				<input id="tail-sources" size="50" />
+			</div>
+			<div id="tail-highlight-tab">
+				<textarea></textarea>
+				<p>For each line above, all results will be highlighted</p>
+			</div>
+			<div id="tail-filter-tab">
+				<textarea id="tail-filter-text"></textarea>
+				<p>For each line above, all results will be filtered</p>
+			</div>
+		</div>
+		<div id="tail-results" class="results"></div>
+	</div>
+	<div id="grep-tab">
+		<div id="grep-tabs">
+			<ul>
+				<li><a href="#grep-about-tab">Grep</a></li>
+				<li><a href="#grep-filter-tab">Filter</a></li>
+			</ul>
+			<div id="grep-about-tab">
+				<p>This tab displays log events in real time.</p>
+			</div>
+			<div id="grep-filter-tab">
+				<textarea></textarea>
+				<p>For each line above, all results will be filtered</p>
+			</div>
+		</div>
+		<div id="grep-results" class="results"></div>
+	</div>
+</div>
+</body>
+</html>
