@@ -3,8 +3,7 @@ lucidGREP
 
 lucidGREP - A web.ui for your.logs using socket.io
 
-author: David Duong
-
-version: 0.0.1
-
-repository: https://github.com/davidnqd/lucidGREP.git
+Author: David Duong
+Version: 0.0.1
+Repository: https://github.com/davidnqd/lucidGREP.git
+License: AGPL
