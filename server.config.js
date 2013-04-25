@@ -1,12 +1,14 @@
-var httpServer = require('http').Server();
+var lucidLOG = require('./lib'),
+	SyslogUDP = require('./lib/SyslogUDP');
 
-var lucidGREP = require('./lib')({
-	server: httpServer,
-	prefix: '/'
-});
+var server = lucidLOG(new require('http').Server());
 
-var files = process.argv.slice(2);
-console.log(files);
+var syslogListener = new SyslogUDP(514);
+server.listenTo(syslogListener);
+
+setInterval(function(){
+	server.emit('data', [{attributes: {source: "Test"}, text: "Test"}]);
+}, 1000);
 
 
-httpServer.listen(3000);
+server.listen(3000);
