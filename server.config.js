@@ -8,7 +8,7 @@ for (var i = 2; i < process.argv.length; i++) {
 }
 
 var SyslogUDP = require('./lib/SyslogUDP');
-server.listenTo(new SyslogUDP(5140), "syslog-5140");
+server.listenTo(new SyslogUDP(514), "syslog-514");
 
 var Test = require('./lib/Test');
 server.listenTo(new Test(), "Test 1");

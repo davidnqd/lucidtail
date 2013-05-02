@@ -46,6 +46,7 @@
 
 		var lucidGREP = new LucidGREP($( '#tail-results' ));
 		lucidGREP.asFilter($( '#tail-sources' ), 'source');
+		lucidGREP.asMessageFilter($( '#tail-filter' ));
 
 		socket.on('data', function (data) {
 			if (!(data instanceof Array))
@@ -72,8 +73,10 @@
 			</ul>
 			<div id='tail-about-tab'>
 				<p>This tab displays log events in real time.</p>
-				<label for='tail-fs'>Sources: </label>
-				<input id='tail-sources' size='50' />
+				<label for='tail-sources'>Sources: </label>
+				<input id='tail-sources' size='50' /> <br/>
+				<label for='tail-filter'>Filter: </label>
+				<input id='tail-filter' size='50' />
 			</div>
 			<div id='tail-highlight-tab'>
 				<textarea></textarea>
