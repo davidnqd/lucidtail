@@ -14,20 +14,38 @@ textarea {
 	border: 0.1em solid;
 }
 
-.result {
+.results details {
 	border: 0.1em solid #ddd;
+	padding-left: 1em;
 	padding-top: 0.3em;
 	padding-bottom: 0.3em;
 }
 
-.highlight {
-	background-color: #FFFFE0;
-}
-.result:nth-child(odd) {
+.results details:nth-child(odd) {
 	background-color:#eee;
 }
-.result:nth-child(even) {
+.results details:nth-child(even) {
 	background-color:#fff;
+}
+
+.results dt {
+	font-weight: bold;
+}
+
+.results dl {
+	border-top: 0.1em solid #ddd;
+	margin: 0;
+	padding: 0.5em;
+	padding-left: 1.5em;
+}
+
+summary {
+	cursor: pointer;
+}
+
+#tail-tabs label {
+	width: 10em;
+	display: inline-block;
 }
 
 .ui-tabs-vertical { width: 55em; }

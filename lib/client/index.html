@@ -39,19 +39,14 @@
 		$( '#grep-tabs' ).tabs().addClass( 'ui-tabs-vertical ui-helper-clearfix' );
 		$( '#grep-tabs li' ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-left' );
 
-		$( '#tail-filter-text' ).change(function () {
-			var value = $(this).val();
-			$('#tail-results .result').hide();
-		});
-
 		var lucidGREP = new LucidGREP($( '#tail-results' ));
 		lucidGREP.asFilter($( '#tail-sources' ), 'source');
 		lucidGREP.asMessageFilter($( '#tail-filter' ));
+		lucidGREP.asHighlighter($( '#highlight-filter' ));
 
 		socket.on('data', function (data) {
 			if (!(data instanceof Array))
 				data = [data];
-			var child;
 			data.forEach(lucidGREP.addEvent, lucidGREP);
 		});
 	});
@@ -67,24 +62,20 @@
 	<div id='tail-tab'>
 		<div id='tail-tabs'>
 			<ul>
-				<li><a href='#tail-about-tab'>Tail</a></li>
-				<li><a href='#tail-highlight-tab'>Highlight</a></li>
 				<li><a href='#tail-filter-tab'>Filter</a></li>
+				<li><a href='#tail-highlight-tab'>Highlight</a></li>
 			</ul>
-			<div id='tail-about-tab'>
-				<p>This tab displays log events in real time.</p>
+			<div id='tail-filter-tab'>
 				<label for='tail-sources'>Sources: </label>
 				<input id='tail-sources' size='50' /> <br/>
-				<label for='tail-filter'>Filter: </label>
+				<label for='tail-filter'>Message: </label>
 				<input id='tail-filter' size='50' />
+				<p>Show events which match <em>all</em> filters.</p>
 			</div>
 			<div id='tail-highlight-tab'>
-				<textarea></textarea>
-				<p>For each line above, all results will be highlighted</p>
-			</div>
-			<div id='tail-filter-tab'>
-				<textarea id='tail-filter-text'></textarea>
-				<p>For each line above, all results will be filtered</p>
+				<label for='highlight-filter'>Message: </label>
+				<input id='highlight-filter' size='50' />
+				<p>Highlight events which match <em>all</em> filters.</p>
 			</div>
 		</div>
 		<div id='tail-results' class='results'></div>
