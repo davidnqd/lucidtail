@@ -23,6 +23,7 @@
   "license": "AGPL",
   "dependencies": {
     "express": "3.2.x",
-    "socket.io": "0.9.14"
+    "socket.io": "0.9.14",
+    "lazy": "1.0.11"
   }
 }
