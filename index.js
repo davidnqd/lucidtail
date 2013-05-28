@@ -28,7 +28,7 @@ for (var i = 2; i < process.argv.length; i++) {
 			factory = require('./lib/examples/tail');
 			break;
 	}
-	lucidGREP.listen(new factory(arg));
+	lucidGREP.listen(factory(arg));
 }
 
 // Serve up the client-side resources
