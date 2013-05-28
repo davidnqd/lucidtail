@@ -98,14 +98,15 @@ LucidGREP.prototype = {
 		var value;
 		for (var key in event) {
 			key = key.toLowerCase();
-			value = event[key].toLowerCase();
 			definition.append( $('<dt />', {text: key}) )
-						.append( $('<dd />', {text: value}) );
-			node.attr('data-' + key, value);
-
-			if (self.attributesCache[key] === undefined)
-				self.attributesCache[key] = {};
-			self.attributesCache[key][value] = true;
+						.append( $('<dd />', {text: JSON.stringify(event[key], undefined, 2) }) );
+			if (typeof event[key] == 'string') {
+				value = event[key].toLowerCase();
+				node.attr('data-' + key, value);
+				if (self.attributesCache[key] === undefined)
+					self.attributesCache[key] = {};
+				self.attributesCache[key][value] = true;
+			}
 		}
 
 		node.on('refresh', function () {

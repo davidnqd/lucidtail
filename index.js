@@ -1,36 +1,34 @@
 var le = require('./lib/Emitter'),
 	express = require('express')
-	Lazy = require('lazy');
+	Lazy = require('lazy'),
+	util = require('util');
 
 var lucidGREP = le(server)
-	.on('error', console.error.bind(console));
+	.on('error', util.error.bind(util));
 
 var httpPort = 3000;
 
-// Get config from command line
-var arg;
+// Process command line arguments
+var arg, factory;
 for (var i = 2; i < process.argv.length; i++) {
 	arg = process.argv[i];
 	switch(arg) {
-	case '-p':
-		httpPort = process.argv[++i];
-		break;
-	case '-s':
-		var SyslogUDP = require('./lib/SyslogUDP');
-		var emitter = new SyslogUDP(process.argv[++i]);
-		lucidGREP.listen(emitter);
-		break;
-	default:
-		var Tail = require('./lib/Tail');
-		var emitter = Lazy(new Tail(arg))
-						.lines
-						.map(String)
-						.map(function (line) {
-							return { data: line, source: arg };
-						});
-		lucidGREP.listen(emitter);
-		break;
+		case '-p':
+			httpPort = process.argv[++i];
+			continue;
+		case '-t':
+			factory = require('./lib/examples/test');
+			arg = process.argv[++i];
+			break;
+		case '-u':
+			factory = require('./lib/examples/udp4');
+			arg = process.argv[++i];
+			break;
+		default:
+			factory = require('./lib/examples/tail');
+			break;
 	}
+	lucidGREP.listen(new factory(arg));
 }
 
 // Serve up the client-side resources
