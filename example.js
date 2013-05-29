@@ -1,10 +1,8 @@
 var le = require('./lib/Emitter'),
-	express = require('express')
-	Lazy = require('lazy'),
-	util = require('util');
+	express = require('express');
 
 var lucidGREP = le(server)
-	.on('error', util.error.bind(util));
+	.on('error', console.error.bind(console));
 
 var httpPort = 3000;
 
@@ -14,6 +12,7 @@ for (var i = 2; i < process.argv.length; i++) {
 	arg = process.argv[i];
 	switch(arg) {
 		case '-p':
+		case '--port':
 			httpPort = process.argv[++i];
 			continue;
 		case '-t':
@@ -21,12 +20,13 @@ for (var i = 2; i < process.argv.length; i++) {
 			arg = process.argv[++i];
 			break;
 		case '-u':
+		case '--udp4':
 			factory = require('./lib/examples/udp4');
 			arg = process.argv[++i];
 			break;
+		case '-f':
 		default:
 			factory = require('./lib/examples/tail');
-			break;
 	}
 	lucidGREP.listen(factory(arg));
 }
