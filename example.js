@@ -1,7 +1,6 @@
-var le = require('./lib/Emitter'),
-	express = require('express');
+var express = require('express');
 
-var lucidGREP = le(server)
+var emitter = require('./lib/Emitter')()
 	.on('error', console.error.bind(console));
 
 var httpPort = 3000;
@@ -28,7 +27,7 @@ for (var i = 2; i < process.argv.length; i++) {
 		default:
 			factory = require('./lib/examples/tail');
 	}
-	lucidGREP.listen(factory(arg));
+	emitter.listen(factory(arg));
 }
 
 // Serve up the client-side resources
@@ -42,4 +41,4 @@ var server = require('http').createServer(app)
 // Serve up client-side socket.io resources
 require('socket.io')
 	.listen(server)
-	.on('connection', lucidGREP.pipe.bind(lucidGREP));
+	.on('connection', emitter.pipe.bind(emitter));
