@@ -1,6 +1,5 @@
-var express = require('express');
-
-var emitter = require('./lib/Emitter')()
+// Create aggregate emitter
+var emitter = require('./lib/AggregateEmitter')()
 	.on('error', console.error.bind(console));
 
 var httpPort = 3000;
@@ -31,6 +30,7 @@ for (var i = 2; i < process.argv.length; i++) {
 }
 
 // Serve up the client-side resources
+var express = require('express');
 var app = express()
 	.use('/', express.static(__dirname + '/client'));
 
