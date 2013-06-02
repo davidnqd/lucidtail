@@ -1,11 +1,8 @@
 {
   "name": "lucidtail",
-  "description": "$ lucidtail file*.log --udp4 514 --http_port 8080",
-  "version": "0.0.1",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/davidnqd/lucidtail.git"
-  },
+  "description": "A real-time zero-configuration web-based tail",
+  "version": "0.0.2",
+  "repository": "git://github.com/davidnqd/lucidtail.git",
   "keywords": [
     "realtime",
     "websocket",
@@ -22,11 +19,10 @@
   },
   "license": "AGPL",
   "dependencies": {
-    "express": "3.2.x",
+    "connect": "2.7.10",
     "socket.io": "0.9.14",
     "lazy": "1.0.11",
     "optimist": "0.5.2"
   },
-  "scripts": { "start" : "node ./index.js" },
   "bin" : "./bin/cli.js"
 }

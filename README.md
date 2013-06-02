@@ -24,10 +24,9 @@ not required.
 
 	npm install lucidtail
 
-`lucidtail` Command
+`lucidtail` --help
 -------------------
 
-	$ lucidtail -h
 	Simple, zero-configuration websocket tail
 	Usage: lucidtail [options] [file ...]
 

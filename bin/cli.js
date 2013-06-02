@@ -20,15 +20,9 @@
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
 
-var lucidtail = require('../lib/');
-
-// Create aggregate emitter
-var emitter = lucidtail.Aggregator()
-	.on('error', console.error.bind(console));
-
 // Specify command line arguments
 var optimist = require('optimist')
-    .usage('Simple, zero-configuration websocket tail\nUsage: $0 [options] [file ...]')
+    .usage('A real-time zero-configuration web-based tail\nUsage: $0 [options] [file ...]')
 
     .alias('h', 'help')
     .alias('h', '?')
@@ -46,72 +40,46 @@ var optimist = require('optimist')
     .alias('t', 'test')
     .describe('t', 'Emit a test log message every second with the specified source name');
 
-// Add Test listener
-if (optimist.argv.test) {
-	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
-	console.log('Registering test emitter with name', arg);
-	emitter.listen('test', optimist.argv.test);
-}
-
-// Add UDP4 listener
-if (optimist.argv.udp4) {
-	console.log('Listening to UDP4 port', optimist.argv.udp4);
-	try {
-		emitter.listen('udp4', optimist.argv.udp4);
-	} catch (e) {
-		console.error('Invalid --port argument:', e.message);
-	}
-}
-
-// Add file listeners
-for (var i = 0; i < optimist.argv._.length; i++) {
-	console.log('Tailing file', optimist.argv._[i]);
-	try {
-		emitter.listen('tail', optimist.argv._[i]);
-	} catch (e) {
-		console.error('Invalid --file argument:', e.message);
-	}
-}
-
-// Show usage if insufficient arguments
+// Show usage
 if (optimist.argv.help) {
 	optimist.showHelp();
 	process.exit(1);
 }
 
-// Serve up the client-side resources
-var express = require('express');
-var app = express()
-	.use('/', express.static(__dirname + '/../client'));
+var lucidtail = require('../lib');
 
-// Configure express if NODE_ENV=production
-app.configure('production', function(){
-  app.use(express.errorHandler());
-});
+// Create aggregate emitter
+var emitter = new lucidtail(optimist.argv.http_port)
+	.on('error', console.error.bind(console));
 
-// Set up the HTTP server
-var server = require('http').createServer(app)
-	.listen(optimist.argv.http_port);
+// Use Test listener
+if (optimist.argv.test) {
+	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
+	console.log('Recognized --test:', arg);
+	try {
+		emitter.use('test', optimist.argv.test);
+	} catch (e) {
+		console.error('Invalid argument (--test):', e.message);
+	}
+}
 
-// Serve up client-side socket.io resources
-var io = require('socket.io')
-	.listen(server)
-	.on('connection', emitter.pipe.bind(emitter));
+// Use UDP4 listener
+if (optimist.argv.udp4) {
+	console.log('Recognized --udp4:', optimist.argv.udp4);
+	try {
+		emitter.use('udp4', optimist.argv.udp4);
+	} catch (e) {
+		console.error('Invalid argument (--port):', e.message);
+	}
+}
 
-// Configure socket.io if NODE_ENV=production
-io.configure('production', function(){
-	io.enable('browser client minification');  // send minified client
-	io.enable('browser client etag');          // apply etag caching logic based on version number
-	io.enable('browser client gzip');          // gzip the file
-	io.set('log level', 1);                    // reduce logging
-
-	// enable all transports (optional if you want flashsocket support, please note that some hosting
-	// providers do not allow you to create servers that listen on a port different than 80 or their
-	// default port)
-	io.set('transports', [
-		'websocket'
-		, 'htmlfile'
-		, 'xhr-polling'
-		, 'jsonp-polling'
-	]);
-});
+// Use file listeners
+// FIXME: Use a native approach instead of tail: e.g. fs.watch
+for (var i = 0; i < optimist.argv._.length; i++) {
+	console.log('Recognized --file:', optimist.argv._[i]);
+	try {
+		emitter.use('tail', optimist.argv._[i]);
+	} catch (e) {
+		console.error('Invalid argument (--file):', e.message);
+	}
+}
