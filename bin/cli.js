@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
-		webtail
-		i.e. webtail file*.log --udp4 514 -p 8080
+		lucidtail
+		i.e. lucidtail file*.log --udp4 514 -p 8080
 		Copyright (C) 2013	David Duong
 
-		https://github.com/davidnqd/webtail
+		https://github.com/davidnqd/lucidtail
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU Affero General Public License as published by
@@ -20,10 +20,10 @@
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
 
-var webtail = require('../lib/');
+var lucidtail = require('../lib/');
 
 // Create aggregate emitter
-var emitter = webtail.Aggregator()
+var emitter = lucidtail.Aggregator()
 	.on('error', console.error.bind(console));
 
 // Specify command line arguments
@@ -37,7 +37,7 @@ var optimist = require('optimist')
     .describe('h', 'Show this help')
 
     .alias('p', 'http_port')
-    .describe('p', 'Specify the http port webtail services')
+    .describe('p', 'Specify the http port lucidtail services')
     .default('p', 8080)
 
     .alias('u', 'udp4')

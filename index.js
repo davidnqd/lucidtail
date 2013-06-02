@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
-		webtail
-		i.e. webtail file*.log --udp4 514 -p 8080
+		lucidtail
+		i.e. lucidtail file*.log --udp4 514 -p 8080
 		Copyright (C) 2013	David Duong
 
-		https://github.com/davidnqd/webtail
+		https://github.com/davidnqd/lucidtail
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU Affero General Public License as published by
@@ -22,5 +22,5 @@
 if (!module.parent) {
 	require("./bin/cli.js");
 } else {
-    require("./lib/");
+	require("./lib/index.js");
 }

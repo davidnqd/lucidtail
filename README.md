@@ -6,27 +6,26 @@ new lines added to any monitored files, new UDP messages, and those emitted by o
 [EventEmitters](http://nodejs.org/api/events.html#events_class_events_eventemitter)
 to your browser.
 
-
 Installation
 ------------
 
-The following assume you already have npm installed.
+You must already have npm installed.
 
-h3. lucidTAIL stand-alone
+### Simple Install
+
+To use the `lucidtail` command:
 
 	npm install lucidtail -g
 
-Note: Your permissions may need to
+### Without the `lucidtail` command
 
-h3. As Library
-
-Either add to your package.json file or:
+The `lucidtail` command saves you from having to invoke node.
+not required.
 
 	npm install lucidtail
 
-
-Command Line Usage
-------------------
+`lucidtail` Command
+-------------------
 
 	$ lucidtail -h
 	Simple, zero-configuration websocket tail

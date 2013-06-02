@@ -1,10 +1,10 @@
 {
-  "name": "webtail",
-  "description": "$ webtail file*.log --udp4 514 --http_port 8080",
+  "name": "lucidtail",
+  "description": "$ lucidtail file*.log --udp4 514 --http_port 8080",
   "version": "0.0.1",
   "repository" : {
     "type" : "git",
-    "url" : "https://github.com/davidnqd/webtail.git"
+    "url" : "https://github.com/davidnqd/lucidtail.git"
   },
   "keywords": [
     "realtime",
@@ -27,5 +27,6 @@
     "lazy": "1.0.11",
     "optimist": "0.5.2"
   },
+  "scripts": { "start" : "node ./index.js" },
   "bin" : "./bin/cli.js"
 }
