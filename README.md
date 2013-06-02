@@ -19,8 +19,7 @@ To use the `lucidtail` command:
 
 ### Without the `lucidtail` command
 
-The `lucidtail` command saves you from having to invoke node.
-not required.
+The `lucidtail` command saves you from having to invoke node, but it is not required.
 
 	npm install lucidtail
 
@@ -35,3 +34,23 @@ not required.
 	  -p, --http_port  Specify the http port lucidtail services                               [default: 8080]
 	  -u, --udp4       Emit incoming UDP messages on the specified port                   
 	  -t, --test       Emit a test log message every second with the specified source name
+
+### Example
+
+`lucidtail` will use it's default http port (8080) when running.
+
+#### Monitor Files
+
+Monitor all files starting with 'file' and ending with '.log'.
+
+	lucidtail file*.log
+
+#### Monitor UDP
+
+Monitor UDP messages on port 514 (syslog). This requires root access on most systems.
+
+	lucidtail -u 514
+
+#### Guess.
+
+	lucidtail file*.log -u 514
