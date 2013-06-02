@@ -22,5 +22,5 @@
 if (!module.parent) {
 	require("./bin/cli.js");
 } else {
-	require("./lib/index.js");
+	module.exports = require("./lib/index.js");
 }
