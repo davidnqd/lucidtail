@@ -54,7 +54,7 @@ if (optimist.argv.udp4) {
 		factory = require('../lib/in/udp4');
 		emitter.listen(factory(optimist.argv.udp4));
 	} catch (e) {
-		console.warn('Invalid --port argument:', e.message);
+		console.error('Invalid --port argument:', e.message);
 	}
 }
 
@@ -63,10 +63,10 @@ for (var i = 0; i < optimist.argv._.length; i++) {
 	if (factory == null)
 		factory = require('../lib/in/tail');
 	try {
-		console.log('tailing file', optimist.argv._[i]);
+		console.log('Tailing file', optimist.argv._[i]);
 		emitter.listen(factory(optimist.argv._[i]));
 	} catch (e) {
-		console.warn('Invalid --file argument:', e.message);
+		console.error('Invalid --file argument:', e.message);
 	}
 }
 
@@ -81,11 +81,34 @@ var express = require('express');
 var app = express()
 	.use('/', express.static(__dirname + '/../client'));
 
+// Configure express if NODE_ENV=production
+app.configure('production', function(){
+  app.use(express.errorHandler());
+});
+
 // Set up the HTTP server
 var server = require('http').createServer(app)
 	.listen(optimist.argv.http_port);
 
 // Serve up client-side socket.io resources
-require('socket.io')
+var io = require('socket.io')
 	.listen(server)
 	.on('connection', emitter.pipe.bind(emitter));
+
+// Configure socket.io if NODE_ENV=production
+io.configure('production', function(){
+	io.enable('browser client minification');  // send minified client
+	io.enable('browser client etag');          // apply etag caching logic based on version number
+	io.enable('browser client gzip');          // gzip the file
+	io.set('log level', 1);                    // reduce logging
+
+	// enable all transports (optional if you want flashsocket support, please note that some hosting
+	// providers do not allow you to create servers that listen on a port different than 80 or their
+	// default port)
+	io.set('transports', [
+		'websocket'
+		, 'htmlfile'
+		, 'xhr-polling'
+		, 'jsonp-polling'
+	]);
+});
