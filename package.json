@@ -1,10 +1,10 @@
 {
-  "name": "lucidGREP",
-  "description": "A web.ui for your.logs using socket.io",
+  "name": "webtail",
+  "description": "$ webtail file*.log --udp4 514 --http_port 8080",
   "version": "0.0.1",
   "repository" : {
     "type" : "git",
-    "url" : "https://github.com/davidnqd/lucidGREP.git"
+    "url" : "https://github.com/davidnqd/webTAIL.git"
   },
   "keywords": [
     "realtime",
@@ -14,16 +14,19 @@
     "tail",
     "viewer",
     "syslog",
+    "udp",
     "file"
   ],
-  "contributors": [{
+  "author": {
   	"name": "David Duong",
   	"url": "http://nqd.me"
-  }],
+  },
   "license": "AGPL",
   "dependencies": {
     "express": "3.2.x",
     "socket.io": "0.9.14",
-    "lazy": "1.0.11"
-  }
+    "lazy": "1.0.11",
+    "optimist": "0.5.2"
+  },
+  "bin" : "./cli.js"
 }
