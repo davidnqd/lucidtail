@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
 		webtail
 		i.e. webtail file*.log --udp4 514 -p 8080
@@ -18,18 +19,8 @@
 		You should have received a copy of the GNU Affero General Public License
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
-var EventEmitter = require('events').EventEmitter;
-
-/**
- * Example demonstrating creating an emitter which sends a test messages every second
- */
-module.exports = function (name) {
-	var result = new EventEmitter();
-
-	var i = 0;
-	setInterval(function() {
-		result.emit('data', {data: 'Test ' + i++, source: name});
-	}, 1000);
-
-	return result;
+if (!module.parent) {
+	require("./bin/cli.js");
+} else {
+    require("./lib/");
 }

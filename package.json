@@ -4,13 +4,12 @@
   "version": "0.0.1",
   "repository" : {
     "type" : "git",
-    "url" : "https://github.com/davidnqd/webTAIL.git"
+    "url" : "https://github.com/davidnqd/webtail.git"
   },
   "keywords": [
     "realtime",
     "websocket",
     "log",
-    "grep",
     "tail",
     "viewer",
     "syslog",
@@ -28,5 +27,5 @@
     "lazy": "1.0.11",
     "optimist": "0.5.2"
   },
-  "bin" : "./cli.js"
+  "bin" : "./bin/cli.js"
 }

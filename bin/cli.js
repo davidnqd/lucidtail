@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
-		webtail file*.log --udp4 514 -p 8080
+		webtail
+		i.e. webtail file*.log --udp4 514 -p 8080
 		Copyright (C) 2013	David Duong
 
-		https://github.com/davidnqd/webTAIL
+		https://github.com/davidnqd/webtail
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU Affero General Public License as published by
@@ -19,40 +20,44 @@
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
 
+var webtail = require('../lib/');
+
 // Create aggregate emitter
-var emitter = require('../lib/Aggregator')()
+var emitter = webtail.Aggregator()
 	.on('error', console.error.bind(console));
 
 // Specify command line arguments
 var optimist = require('optimist')
-    .usage('Usage: $0 [-p|--http_port] [port] ')
+    .usage('Simple, zero-configuration websocket tail\nUsage: $0 [options] [file ...]')
+
+    .alias('h', 'help')
+    .alias('h', '?')
+    .boolean('h')
+    .default('h', false)
+    .describe('h', 'Show this help')
 
     .alias('p', 'http_port')
     .describe('p', 'Specify the http port webtail services')
     .default('p', 8080)
 
     .alias('u', 'udp4')
-    .describe('u', 'Listens to a UDP port')
+    .describe('u', 'Emit incoming UDP messages on the specified port')
 
     .alias('t', 'test')
-    .describe('t', 'Emits a test log message every second');
-
-var factory;
+    .describe('t', 'Emit a test log message every second with the specified source name');
 
 // Add Test listener
 if (optimist.argv.test) {
 	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
 	console.log('Registering test emitter with name', arg);
-	factory = require('../lib/in/test');
-	emitter.listen(factory(arg));
+	emitter.listen('test', optimist.argv.test);
 }
 
 // Add UDP4 listener
 if (optimist.argv.udp4) {
+	console.log('Listening to UDP4 port', optimist.argv.udp4);
 	try {
-		console.log('Listening to UDP4 port', optimist.argv.udp4);
-		factory = require('../lib/in/udp4');
-		emitter.listen(factory(optimist.argv.udp4));
+		emitter.listen('udp4', optimist.argv.udp4);
 	} catch (e) {
 		console.error('Invalid --port argument:', e.message);
 	}
@@ -60,18 +65,16 @@ if (optimist.argv.udp4) {
 
 // Add file listeners
 for (var i = 0; i < optimist.argv._.length; i++) {
-	if (factory == null)
-		factory = require('../lib/in/tail');
+	console.log('Tailing file', optimist.argv._[i]);
 	try {
-		console.log('Tailing file', optimist.argv._[i]);
-		emitter.listen(factory(optimist.argv._[i]));
+		emitter.listen('tail', optimist.argv._[i]);
 	} catch (e) {
 		console.error('Invalid --file argument:', e.message);
 	}
 }
 
 // Show usage if insufficient arguments
-if (factory == null) {
+if (optimist.argv.help) {
 	optimist.showHelp();
 	process.exit(1);
 }

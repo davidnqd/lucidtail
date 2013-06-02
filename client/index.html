@@ -1,9 +1,10 @@
 <!doctype html>
 <!--
-		webtail file*.log --udp4 514 -p 8080
+		webtail
+		i.e. webtail file*.log --udp4 514 -p 8080
 		Copyright (C) 2013	David Duong
 
-		https://github.com/davidnqd/webTAIL
+		https://github.com/davidnqd/webtail
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +22,7 @@
 <html lang='en'>
 <head>
 	<meta charset='utf-8' />
-	<title>webTAIL</title>
+	<title>webtail</title>
 	<link rel='stylesheet' href='http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css' />
 	<script src='http://code.jquery.com/jquery-2.0.0.js'></script>
 	<script src='http://code.jquery.com/ui/1.10.2/jquery-ui.js'></script>
@@ -33,11 +34,8 @@
 
 	var socket = io.connect();
 	$(function() {
-		$( '#tabs' ).tabs().css( 'border', 'none' );
 		$( '#tail-tabs' ).tabs().addClass( 'ui-tabs-vertical ui-helper-clearfix' );
 		$( '#tail-tabs li' ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-left' );
-		$( '#grep-tabs' ).tabs().addClass( 'ui-tabs-vertical ui-helper-clearfix' );
-		$( '#grep-tabs li' ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-left' );
 
 		var stdOUT = new Client();
 		stdOUT.asResultsPane($( '#tail-results' ));
@@ -52,51 +50,27 @@
 	</script>
 </head>
 <body>
- 
-<div id='tabs'>
+
+<div id='tail-tabs'>
 	<ul>
-		<li><a href='#tail-tab'>Tail</a></li>
-		<li><a href='#grep-tab'>Grep</a></li>
+		<li><a href='#tail-filter-tab'>Filter</a></li>
+		<li><a href='#tail-highlight-tab'>Highlight</a></li>
 	</ul>
-	<div id='tail-tab'>
-		<div id='tail-tabs'>
-			<ul>
-				<li><a href='#tail-filter-tab'>Filter</a></li>
-				<li><a href='#tail-highlight-tab'>Highlight</a></li>
-			</ul>
-			<div id='tail-filter-tab'>
-				<label for='tail-sources'>Sources: </label>
-				<input id='tail-sources' size='50' /> <br/>
-				<label for='tail-filter'>Message: </label>
-				<input id='tail-filter' size='50' />
-				<p>Show events which match <em>all</em> filters.</p>
-			</div>
-			<div id='tail-highlight-tab'>
-				<label for='highlight-filter'>Message: </label>
-				<input id='highlight-filter' size='50' />
-				<p>Highlight events which match <em>all</em> filters.</p>
-			</div>
-		</div>
-		<input type="checkbox" id="tail-pause" /><label for="tail-pause">&#10074;&#10074; Pause</label>
-		<input type="button" id="tail-clear" value="Clear" />
-		<div id='tail-results' class='results'></div>
+	<div id='tail-filter-tab'>
+		<label for='tail-sources'>Sources: </label>
+		<input id='tail-sources' size='50' /> <br/>
+		<label for='tail-filter'>Message: </label>
+		<input id='tail-filter' size='50' />
+		<p>Show events which match <em>all</em> filters.</p>
 	</div>
-	<div id='grep-tab'>
-		<div id='grep-tabs'>
-			<ul>
-				<li><a href='#grep-about-tab'>Grep</a></li>
-				<li><a href='#grep-filter-tab'>Filter</a></li>
-			</ul>
-			<div id='grep-about-tab'>
-				<p>This tab displays log events in real time.</p>
-			</div>
-			<div id='grep-filter-tab'>
-				<textarea></textarea>
-				<p>For each line above, all results will be filtered</p>
-			</div>
-		</div>
-		<div id='grep-results' class='results'></div>
+	<div id='tail-highlight-tab'>
+		<label for='highlight-filter'>Message: </label>
+		<input id='highlight-filter' size='50' />
+		<p>Highlight events which match <em>all</em> filters.</p>
 	</div>
 </div>
+<input type="checkbox" id="tail-pause" /><label for="tail-pause">&#10074;&#10074; Pause</label>
+<input type="button" id="tail-clear" value="Clear" />
+<div id='tail-results' class='results'></div>
 </body>
 </html>
