@@ -1,5 +1,5 @@
 // Create aggregate emitter
-var emitter = require('./lib/AggregateEmitter')()
+var emitter = require('./lib/Aggregator')()
 	.on('error', console.error.bind(console));
 
 var httpPort = 3000;
@@ -13,6 +13,7 @@ for (var i = 2; i < process.argv.length; i++) {
 		case '--port':
 			httpPort = process.argv[++i];
 			continue;
+		case '--test':
 		case '-t':
 			factory = require('./lib/examples/test');
 			arg = process.argv[++i];

@@ -1,9 +1,9 @@
 <!doctype html>
 <!--
-		lucidGREP - Simple web.ui for text files
+		webtail file*.log --udp4 514 -p 8080
 		Copyright (C) 2013	David Duong
 
-		https://github.com/davidnqd/lucidGREP
+		https://github.com/davidnqd/webTAIL
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@
 <html lang='en'>
 <head>
 	<meta charset='utf-8' />
-	<title>lucidGREP</title>
+	<title>webTAIL</title>
 	<link rel='stylesheet' href='http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css' />
 	<script src='http://code.jquery.com/jquery-2.0.0.js'></script>
 	<script src='http://code.jquery.com/ui/1.10.2/jquery-ui.js'></script>
@@ -39,16 +39,15 @@
 		$( '#grep-tabs' ).tabs().addClass( 'ui-tabs-vertical ui-helper-clearfix' );
 		$( '#grep-tabs li' ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-left' );
 
-		var lucidGREP = new LucidGREP($( '#tail-results' ));
-		lucidGREP.asFilter($( '#tail-sources' ), 'source');
-		lucidGREP.asMessageFilter($( '#tail-filter' ));
-		lucidGREP.asHighlighter($( '#highlight-filter' ));
+		var stdOUT = new Client();
+		stdOUT.asResultsPane($( '#tail-results' ));
+		stdOUT.asFilter($( '#tail-sources' ), 'source');
+		stdOUT.asMessageFilter($( '#tail-filter' ));
+		stdOUT.asHighlighter($( '#highlight-filter' ));
+		stdOUT.asPause($('#tail-pause'));
+		stdOUT.asClear($('#tail-clear'));
 
-		socket.on('data', function (data) {
-			if (!(data instanceof Array))
-				data = [data];
-			data.forEach(lucidGREP.addEvent, lucidGREP);
-		});
+		socket.on('data', stdOUT.addEvent.bind(stdOUT));
 	});
 	</script>
 </head>
@@ -78,6 +77,8 @@
 				<p>Highlight events which match <em>all</em> filters.</p>
 			</div>
 		</div>
+		<input type="checkbox" id="tail-pause" /><label for="tail-pause">&#10074;&#10074; Pause</label>
+		<input type="button" id="tail-clear" value="Clear" />
 		<div id='tail-results' class='results'></div>
 	</div>
 	<div id='grep-tab'>

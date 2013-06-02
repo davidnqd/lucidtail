@@ -1,8 +1,8 @@
 /**
-		lucidGREP - Simple web.ui for text files
+		webtail file*.log --udp4 514 -p 8080
 		Copyright (C) 2013	David Duong
 
-		https://github.com/davidnqd/lucidGREP
+		https://github.com/davidnqd/webTAIL
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU Affero General Public License as published by
@@ -17,15 +17,35 @@
 		You should have received a copy of the GNU Affero General Public License
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
-
-function LucidGREP(resultsPane) {
-	this.resultsPane = resultsPane;
+function Client() {
+	this.resultsPane = $();
+	this.filters = [];
+	this.callbacks = [];
+	this.attributesCache = {};
 }
-LucidGREP.prototype = {
-	resultsPane: null,
-	filters: [],
-	callbacks: [],
-	attributesCache: {},
+Client.RECIEVED_KEY = '_received'
+Client.prototype = {
+	asClear: function (element) {
+		element.button().click(this.resultsPane.empty.bind(this.resultsPane));
+	},
+
+	asPause: function (element) {
+		var self = this;
+
+		var pauseTime;
+		element.button().click(function() {
+			pauseTime = new Date;
+			self.refresh();
+		});
+		
+		self.filters.push(function (child) {
+			return !element.prop('checked') || new Date(child.data(Client.RECIEVED_KEY)) < pauseTime;
+		});
+	},
+
+	asResultsPane: function (element) {
+		this.resultsPane = this.resultsPane.add(element);
+	},
 
 	asMessageFilter: function (element) {
 		this.filters.push(function (child) {
@@ -40,9 +60,9 @@ LucidGREP.prototype = {
 		this.callbacks.push(function (child) {
 			var elementValue = element.val().toLowerCase();
 			if (elementValue && child.text().toLowerCase().indexOf(elementValue) > -1) {
-				child.css("background-color", "yellow");
+				child.css('background-color', 'yellow');
 			} else {
-				child.css("background-color", '');
+				child.css('background-color', '');
 			}
 		});
 
@@ -100,6 +120,7 @@ LucidGREP.prototype = {
 			key = key.toLowerCase();
 			definition.append( $('<dt />', {text: key}) )
 						.append( $('<dd />', {text: JSON.stringify(event[key], undefined, 2) }) );
+			node.attr('data-' + Client.RECIEVED_KEY, +new Date);
 			if (typeof event[key] == 'string') {
 				value = event[key].toLowerCase();
 				node.attr('data-' + key, value);
@@ -135,5 +156,5 @@ LucidGREP.prototype = {
 };
 
 function split( val ) {
-	return val.replace(/^[\s,]+|[\s,]+$/g,'').split( /\s*,\s*/ );
+	return val.replace(/^[\s,]+|[\s,]+$/g, '').split( /\s*,\s*/ );
 }
