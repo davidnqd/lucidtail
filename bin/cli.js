@@ -57,7 +57,7 @@ if (optimist.argv.test) {
 	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
 	console.log('Recognized --test:', arg);
 	try {
-		emitter.use('test', optimist.argv.test);
+		emitter.listen(lucidtail.createEmitter('test', optimist.argv.test));
 	} catch (e) {
 		console.error('Invalid argument (--test):', e.message);
 	}
@@ -67,7 +67,7 @@ if (optimist.argv.test) {
 if (optimist.argv.udp4) {
 	console.log('Recognized --udp4:', optimist.argv.udp4);
 	try {
-		emitter.use('udp4', optimist.argv.udp4);
+		emitter.listen(lucidtail.createEmitter('udp4', optimist.argv.udp4));
 	} catch (e) {
 		console.error('Invalid argument (--port):', e.message);
 	}
@@ -78,7 +78,7 @@ if (optimist.argv.udp4) {
 for (var i = 0; i < optimist.argv._.length; i++) {
 	console.log('Recognized --file:', optimist.argv._[i]);
 	try {
-		emitter.use('tail', optimist.argv._[i]);
+		emitter.listen(lucidtail.createEmitter('tail', optimist.argv._[i]));
 	} catch (e) {
 		console.error('Invalid argument (--file):', e.message);
 	}
