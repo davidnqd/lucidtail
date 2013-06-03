@@ -34,13 +34,13 @@ Client.prototype = {
 		var self = this;
 
 		var pauseTime;
-		element.button().click(function() {
-			pauseTime = new Date;
+		element.button().change(function(event) {
+			pauseTime = (element.prop('checked'))? new Date: null;
 			self.refresh();
 		});
 		
 		self.filters.push(function (child) {
-			return !element.prop('checked') || new Date(child.data(Client.RECIEVED_KEY)) < pauseTime;
+			return !pauseTime || new Date(child.data(Client.RECIEVED_KEY)) < pauseTime;
 		});
 	},
 
