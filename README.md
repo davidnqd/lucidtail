@@ -9,7 +9,7 @@ to your browser.
 Installation
 ------------
 
-You must already have npm installed.
+You must already have [nodejs](http://nodejs.org/download/) installed.
 
 ### Simple Install
 
@@ -19,7 +19,7 @@ To use the `lucidtail` command:
 
 ### Without the `lucidtail` command
 
-The `lucidtail` command saves you from having to invoke node, but it is not required.
+The `lucidtail` command is not required, `node index.js` or simply `./index.js` will work.
 
 	npm install lucidtail
 
@@ -35,7 +35,7 @@ The `lucidtail` command saves you from having to invoke node, but it is not requ
 	  -u, --udp4       Emit incoming UDP messages on the specified port                   
 	  -t, --test       Emit a test log message every second with the specified source name
 
-### Example
+### Examples
 
 `lucidtail` will use it's default http port (8080) when running.
 
