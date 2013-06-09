@@ -13,7 +13,7 @@ You must already have [nodejs](http://nodejs.org/download/) installed.
 
 ### Simple Install
 
-To use the `lucidtail` command:
+To install lucidtail as a global package (which exposes the `lucidtail` command):
 
 	npm install lucidtail -g
 
@@ -26,12 +26,12 @@ The `lucidtail` command is not required, `node index.js` or simply `./index.js` 
 `lucidtail` --help
 -------------------
 
-	Simple, zero-configuration websocket tail
+	A real-time zero-configuration web-based tail
 	Usage: lucidtail [options] [file ...]
 
 	Options:
-	  -h, --help       Show this help                                                       [boolean]  [default: false]
-	  -p, --http_port  Specify the http port lucidtail services                               [default: 8080]
+	  -h, --help, -?   Show this help                                                       [boolean]  [default: false]
+	  -p, --http_port  Specify the http port lucidtail services                             [default: 8080]
 	  -u, --udp4       Emit incoming UDP messages on the specified port                   
 	  -t, --test       Emit a test log message every second with the specified source name
 

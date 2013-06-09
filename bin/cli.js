@@ -49,6 +49,7 @@ if (optimist.argv.help) {
 // Create aggregate emitter
 var lucidtail = require('../lib');
 var emitter = new lucidtail(optimist.argv.http_port)
+	// Log errors to stderr
 	.on('error', console.error.bind(console));
 
 // Use Test listener
