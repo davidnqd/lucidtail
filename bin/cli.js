@@ -43,12 +43,11 @@ var optimist = require('optimist')
 // Show usage
 if (optimist.argv.help) {
 	optimist.showHelp();
-	process.exit(1);
+	process.exit(0);
 }
 
-var lucidtail = require('../lib');
-
 // Create aggregate emitter
+var lucidtail = require('../lib');
 var emitter = new lucidtail(optimist.argv.http_port)
 	.on('error', console.error.bind(console));
 
@@ -56,30 +55,18 @@ var emitter = new lucidtail(optimist.argv.http_port)
 if (optimist.argv.test) {
 	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
 	console.log('Recognized --test:', arg);
-	try {
-		emitter.listen(lucidtail.createEmitter('test', optimist.argv.test));
-	} catch (e) {
-		console.error('Invalid argument (--test):', e.message);
-	}
+	emitter.listen(lucidtail.createEmitter('test', optimist.argv.test));
 }
 
 // Use UDP4 listener
 if (optimist.argv.udp4) {
 	console.log('Recognized --udp4:', optimist.argv.udp4);
-	try {
-		emitter.listen(lucidtail.createEmitter('udp4', optimist.argv.udp4));
-	} catch (e) {
-		console.error('Invalid argument (--port):', e.message);
-	}
+	emitter.listen(lucidtail.createEmitter('udp4', optimist.argv.udp4));
 }
 
 // Use file listeners
 // FIXME: Use a native approach instead of tail: e.g. fs.watch
 for (var i = 0; i < optimist.argv._.length; i++) {
 	console.log('Recognized --file:', optimist.argv._[i]);
-	try {
-		emitter.listen(lucidtail.createEmitter('tail', optimist.argv._[i]));
-	} catch (e) {
-		console.error('Invalid argument (--file):', e.message);
-	}
+	emitter.listen(lucidtail.createEmitter('tail', optimist.argv._[i]));
 }
