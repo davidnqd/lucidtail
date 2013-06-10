@@ -13,22 +13,25 @@ You must already have [nodejs](http://nodejs.org/download/) installed.
 
 ### Simple Install
 
-To install lucidTAIL as a global package (which also adds the `lucidtail` command to your path):
+To install lucidTAIL as a global package:
 
 	npm install lucidtail -g
 
+This allows you to  (which also adds the `lucidtail` command to your path)
+
 ### Install from Git
 
+Clone the lucidTAIL repo:
 	git clone git://github.com/davidnqd/lucidtail.git
 
-You should now have a copy of lucidtail in ./lucidtail and you can execute
-`lucidtail/index.js` instead of `lucidtail`
+You should now be able to use `lucidtail/index.js` or `node lucidtail/index.js`
+instead of `lucidtail`.
 
-### Install locally
+### Non-global Install
 
 	npm install lucidtail
 
-You can then use lucidTAIL as a library in your scripts.
+You can then embed lucidtail ( i.e. `require('lucidtail')` ) in your scripts.
 
 `lucidtail` Command
 -------------------

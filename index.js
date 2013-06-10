@@ -19,8 +19,10 @@
 		You should have received a copy of the GNU Affero General Public License
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
-if (!module.parent) {
-	require("./bin/cli.js");
+if (module.parent) {
+	// A module required this module, behave like a regular module.
+	module.exports = require("./lib");
 } else {
-	module.exports = require("./lib/index.js");
+	// Run as CLI program
+	require("./bin/cli.js");
 }
