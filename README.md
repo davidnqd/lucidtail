@@ -148,12 +148,11 @@ users.
 
 ### `lucidtail.Aggregator`
 
-A sub class of `events.EventEmitter`.
+A sub class of [`events.EventEmitter`](http://nodejs.org/api/events.html#events_class_events_eventemitter).
 
 #### `lucidtail.Aggregator.pipe(destination[, events])`
 
-Forward events to a destination
-[`events.EventEmitter`](http://nodejs.org/api/events.html#events_class_events_eventemitter).
+Forward events to a destination `events.EventEmitter`.
 
  * `destination`: An `events.EventEmitter`
  * `events`: An array of events to forward (default: ['data', 'error']) or an object whose

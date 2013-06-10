@@ -1,7 +1,7 @@
 {
   "name": "lucidtail",
   "description": "A real-time zero-configuration web-based tail",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": "git://github.com/davidnqd/lucidtail.git",
   "keywords": [
     "realtime",
