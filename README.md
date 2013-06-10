@@ -13,18 +13,29 @@ You must already have [nodejs](http://nodejs.org/download/) installed.
 
 ### Simple Install
 
-To install lucidtail as a global package (which exposes the `lucidtail` command):
+To install lucidTAIL as a global package (which also adds the `lucidtail` command to your path):
 
 	npm install lucidtail -g
 
-### Without the `lucidtail` command
+### Install from Git
 
-The `lucidtail` command is not required, `node index.js` or simply `./index.js` will work.
+	git clone git://github.com/davidnqd/lucidtail.git
+
+You should now have a copy of lucidtail in ./lucidtail and you can execute
+`lucidtail/index.js` instead of `lucidtail`
+
+### Install locally
 
 	npm install lucidtail
 
-`lucidtail` --help
+You can then use lucidTAIL as a library in your scripts.
+
+`lucidtail` Command
 -------------------
+
+lucidTAIL comes
+
+### --help
 
 	A real-time zero-configuration web-based tail
 	Usage: lucidtail [options] [file ...]
@@ -34,6 +45,7 @@ The `lucidtail` command is not required, `node index.js` or simply `./index.js` 
 	  -p, --http_port  Specify the http port lucidtail services                             [default: 8080]
 	  -u, --udp4       Emit incoming UDP messages on the specified port                   
 	  -t, --test       Emit a test log message every second with the specified source name
+	  -o, --of         Broadcast on a given socket.io namespace.                          
 
 ### Examples
 
