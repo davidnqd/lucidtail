@@ -121,13 +121,15 @@ The following will display all incoming traffic on port 514 (the default syslog 
 
 #### syslog
 
-The following will display all incoming traffic on port 514 and will try to extract any 
-the syslog HEADER data:
+The following will display all incoming traffic on port 514 and will try to extract
+syslog HEADER data:
 
-Notes:
+**Notes**:
 
-* This example requires [lazy](https://npmjs.org/package/lazy) which is on npm.
-* Port 514 may require root/Administrator privileges to bind.
+ * This example requires [lazy](https://npmjs.org/package/lazy) which is on npm.
+ * Port 514 may require root/Administrator privileges to bind.
+
+**Example**:
 
 	var lucidtail = require('lucidtail'),
 		lazy = require('lazy');
