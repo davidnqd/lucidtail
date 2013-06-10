@@ -143,8 +143,8 @@ users.
 
  * 'server|port': either a `http.Server` or a port (default = 8080)
  * 'options': the options object
- ** 'host': http host to listen to (default = `INADDR_ANY`)
- ** 'of': socket.io namespace to use
+	* 'host': http host to listen to (default = `INADDR_ANY`)
+	* 'of': socket.io namespace to use
 
 ### `lucidtail.Aggregator`
 
@@ -166,11 +166,11 @@ The opposite of `lucidtail.Aggregator.pipe(destination[, events])`.
 
 A connivence method which creates `events.EventEmitter`s which emit.
 
- * `name` may be:
- ** 'tail': `tail` a file specified by arg1 (default: 'test')
- ** 'test': Emit a test message every second
- ** 'udp': Emit inbound UDP messages on a port specified by arg1
- ** 'socketio': Pipes emitted events to a socket.io socket servicing `http.Server` arg1.
+ * `name` object
+	* `tail': `tail` a file specified by arg1 (default: 'test')
+	* `test`: Emit a test message every second
+	* `udp`: Emit inbound UDP messages on a port specified by arg1
+	* `socketio`: Pipes emitted events to a socket.io socket servicing `http.Server` arg1.
 
 ### `lucidtail.client()`
 
