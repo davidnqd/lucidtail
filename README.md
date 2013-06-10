@@ -87,56 +87,38 @@ The examples assume you have either added lucidtail to your `package.json` or ex
 
 	npm install lucidtail
 
-#### Simple
+#### Test
+
+Create an instance of lucidTAIL which services the default port (port 8080):
 
 	var lucidtail = require('lucidtail');
+	lucidtail()
+		.listen(lucidtail.emitter('test'));
 
-	// Create an HTTP server which serves the lucidtail client HTML
-	var app = require('http').createServer(lucidtail.client())
-		.listen(8080);
+#### UDP
 
-	// Create aggregate emitter
-	var emitter = new lucidtail.Aggregator(app)
-		// Send events to socket.io
-		.pipe(lucidtail.createEmitter('socketio', app))
-		// Listen to a test emitter
-		.listen(lucidtail.createEmitter('test'));
-
-#### UDP (using `lucidtail.createEmitter`)
-
-The following will display all incoming traffic on port 514 (the default syslog port).
+The following will display all inbound UDP packets on port 1337:
 
 	var lucidtail = require('lucidtail');
+	lucidtail()
+		.listen(lucidtail.emitter('udp4', 1337));
 
-	// Create an HTTP server which serves the lucidtail client HTML
-	var app = require('http').createServer(lucidtail.client())
-		.listen(8080);
-
-	// Create aggregate emitter
-	var emitter = new lucidtail.Aggregator(app)
-		// Send events to socket.io
-		.pipe(lucidtail.createEmitter('socketio', app))
-		// Listen to a test emitter
-		.listen(lucidtail.createEmitter('udp4', 514));
+**Note**: Port 80 and 514 are usually restricted ports and may require root/Administrator
+privileges.
 
 #### syslog
 
-The following will display all incoming traffic on port 514 and will try to extract
-syslog HEADER data:
+The following will display inbound syslog messages (port 514) on HTTP port 80:
 
 **Notes**:
 
  * This example requires [lazy](https://npmjs.org/package/lazy) which is on npm.
- * Port 514 may require root/Administrator privileges to bind.
+ * Port 80 and 514 may require root/Administrator privileges to bind.
 
 **Example**:
 
 	var lucidtail = require('lucidtail'),
 		lazy = require('lazy');
-
-	// Create an HTTP server which serves the lucidtail client HTML
-	var app = require('http').createServer(lucidtail.client())
-		.listen(8080);
 
 	// Use a simple regex to parse out the values in the message
 	// Not even RFC 3164, but this is just an example.
@@ -160,13 +142,11 @@ syslog HEADER data:
 		});
 
 	// Create aggregate emitter
-	var emitter = new lucidtail.Aggregator(app)
-		// Send events to socket.io
-		.pipe(lucidtail.createEmitter('socketio', app))
+	var emitter = lucidtail(80)
 		// Listen to a test emitter
 		.listen(syslog);
 
 API
 ---
 
-TBC
+Still rapidly evolving - Come back in version 0.1.0

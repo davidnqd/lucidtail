@@ -56,31 +56,23 @@ if (optimist.argv.help) {
 var lucidtail = require('../lib');
 
 // Create HTTP server
-var app = require('http').createServer(lucidtail.client())
-	.listen(optimist.argv.http_port, optimist.argv.http_host);
-
-// Create aggregate emitter
-var emitter = new lucidtail.Aggregator(app)
-	// Send errors to stderr
-	.on('error', console.error.bind(console))
-	// Send events to socket.io
-	.pipe(lucidtail.createEmitter('socketio', app, {emitter: emitter, of: optimist.argv.of}));
+var emitter = lucidtail(optimist.argv.http_port, {host: optimist.argv.http_host, of: optimist.argv.of});
 
 // Use Test listener
 if (optimist.argv.test) {
 	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
 	console.log('Recognized --test:', arg);
-	emitter.listen(lucidtail.createEmitter('test', optimist.argv.test));
+	emitter.listen(lucidtail.emitter('test', optimist.argv.test));
 }
 
 // Use UDP4 listener
 if (optimist.argv.udp4) {
 	console.log('Recognized --udp4:', optimist.argv.udp4);
-	emitter.listen(lucidtail.createEmitter('udp4', optimist.argv.udp4));
+	emitter.listen(lucidtail.emitter('udp4', optimist.argv.udp4));
 }
 
 // Use file listeners
 for (var i = 0; i < optimist.argv._.length; i++) {
 	console.log('Recognized --file:', optimist.argv._[i]);
-	emitter.listen(lucidtail.createEmitter('tail', optimist.argv._[i]));
+	emitter.listen(lucidtail.emitter('tail', optimist.argv._[i]));
 }
