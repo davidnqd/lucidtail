@@ -28,23 +28,21 @@
 	<script src='http://code.jquery.com/ui/1.10.2/jquery-ui.js'></script>
 
 	<link rel='stylesheet' href='style.css' />
-	<script src='client.js'></script>
 	<script src='/socket.io/socket.io.js'></script>
+	<script src='client.js'></script>
 	<script>
 	$(function() {
 		$( '#tail-tabs' ).tabs().addClass( 'ui-tabs-vertical ui-helper-clearfix' );
 		$( '#tail-tabs li' ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-left' );
 
-		var stdOUT = new Client();
-		stdOUT.asResultsPane($( '#tail-results' ));
-		stdOUT.asFilter($( '#tail-sources' ), 'source');
-		stdOUT.asMessageFilter($( '#tail-filter' ));
-		stdOUT.asHighlighter($( '#highlight-filter' ));
-		stdOUT.asPause($('#tail-pause'));
-		stdOUT.asClear($('#tail-clear'));
-
-		var socket = io.connect()
-			.on('data', stdOUT.addEvent.bind(stdOUT));
+		new Client()
+			.asResultsPane($( '#tail-results' ))
+			.asFilter($( '#tail-sources' ), 'source')
+			.asMessageFilter($( '#tail-filter' ))
+			.asHighlighter($( '#highlight-filter' ))
+			.asPause($('#tail-pause'))
+			.asClear($('#tail-clear'))
+			.listen(io.connect());
 	});
 	</script>
 </head>

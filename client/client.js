@@ -18,7 +18,7 @@
 		You should have received a copy of the GNU Affero General Public License
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
-function Client() {
+function Client(input) {
 	this.resultsPane = $();
 	this.filters = [];
 	this.callbacks = [];
@@ -26,8 +26,14 @@ function Client() {
 }
 Client.RECIEVED_KEY = '_received'
 Client.prototype = {
+	listen: function (emitter) {
+		emitter.on('data', this.addEvent.bind(this));
+		return this;
+	},
+
 	asClear: function (element) {
 		element.button().click(this.resultsPane.empty.bind(this.resultsPane));
+		return this;
 	},
 
 	asPause: function (element) {
@@ -42,10 +48,14 @@ Client.prototype = {
 		self.filters.push(function (child) {
 			return !pauseTime || new Date(child.data(Client.RECIEVED_KEY)) < pauseTime;
 		});
+
+		return this;
 	},
 
 	asResultsPane: function (element) {
 		this.resultsPane = this.resultsPane.add(element);
+
+		return this;
 	},
 
 	asMessageFilter: function (element) {
@@ -55,6 +65,8 @@ Client.prototype = {
 		});
 
 		element.change(this.refresh.bind(this));
+
+		return this;
 	},
 
 	asHighlighter: function (element, key) {
@@ -68,6 +80,8 @@ Client.prototype = {
 		});
 
 		element.change(this.refresh.bind(this));
+
+		return this;
 	},
 
 	asFilter: function (element, key) {
@@ -107,6 +121,8 @@ Client.prototype = {
 		});
 
 		element.change(self.refresh.bind(self));
+
+		return this;
 	},
 
 	addEvent: function (event) {
@@ -153,6 +169,8 @@ Client.prototype = {
 
 	refresh: function () {
 		this.resultsPane.children().trigger('refresh');
+
+		return this;
 	}
 };
 
