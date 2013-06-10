@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
 		lucidtail
-		ie. lucidtail *.log -p 8080
+		ie. lucidtail *.log
 		Copyright (C) 2013	David Duong
 
 		https://github.com/davidnqd/lucidtail
@@ -30,12 +30,11 @@ var optimist = require('optimist')
     .default('h', false)
     .describe('h', 'Show this help')
 
-    .describe('http_host', 'Specify the http host lucidtail services')
-    .default('p', 8080)
-
     .alias('p', 'http_port')
     .describe('p', 'Specify the http port lucidtail services. (0 = random port)')
     .default('p', 8080)
+
+    .describe('http_host', 'Specify the http host lucidtail services')
 
     .alias('u', 'udp4')
     .describe('u', 'Emit incoming UDP messages on the specified port')
@@ -57,8 +56,7 @@ if (optimist.argv.help) {
 var lucidtail = require('../lib');
 
 // Create HTTP server
-var http = require('http');
-var app = http.createServer(lucidtail.client())
+var app = require('http').createServer(lucidtail.client())
 	.listen(optimist.argv.http_port, optimist.argv.http_host);
 
 // Create aggregate emitter
