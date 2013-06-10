@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
 		lucidtail
-		i.e. lucidtail file*.log --udp4 514 -p 8080
+		ie. lucidtail *.log -p 8080
 		Copyright (C) 2013	David Duong
 
 		https://github.com/davidnqd/lucidtail

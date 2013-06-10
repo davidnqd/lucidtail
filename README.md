@@ -6,39 +6,46 @@ new lines added to any monitored files, new UDP messages, and those emitted by o
 [EventEmitters](http://nodejs.org/api/events.html#events_class_events_eventemitter)
 to your browser.
 
-Installation
-------------
+Table of Contents
+-----------------
+
+1. [`lucidtail` Command](#lucidtail-command)
+2. [lucidtail Module](#lucidtail-module)
+
+`lucidtail` Command
+-------------------
+
+lucidTAIL comes with a simple command (`lucidtail`) which listens to a number of specified
+source and displays them in a pretty little web application.
+
+To quickly be able to view your logs at [http://localhost:8080](http://localhost:8080):
+
+	npm install lucidtail -g # One time global install
+	lucidtail *.log
+
+### Installation
 
 You must already have [nodejs](http://nodejs.org/download/) installed.
 
-### Simple Install
+#### Simple
 
-To install lucidTAIL as a global package:
+To install lucidTAIL globally:
 
 	npm install lucidtail -g
 
-This allows you to  (which also adds the `lucidtail` command to your path)
+This allows you to use the `lucidtail` command. You may need root/Administrator access, if
+you don't have it you can alternately get lucidTAIL from the [git repository](#from-git).
 
-### Install from Git
+#### From GIT
 
-Clone the lucidTAIL repo:
+Clone lucidTAIL:
+
 	git clone git://github.com/davidnqd/lucidtail.git
 
 You should now be able to use `lucidtail/index.js` or `node lucidtail/index.js`
 instead of `lucidtail`.
 
-### Non-global Install
-
-	npm install lucidtail
-
-You can then embed lucidtail ( i.e. `require('lucidtail')` ) in your scripts.
-
-`lucidtail` Command
--------------------
-
-lucidTAIL comes
-
-### --help
+### Usage `--help`
 
 	A real-time zero-configuration web-based tail
 	Usage: lucidtail [options] [file ...]
@@ -56,9 +63,9 @@ lucidTAIL comes
 
 #### Monitor Files
 
-Monitor all files starting with 'file' and ending with '.log'.
+Monitor all files ending with '.log'.
 
-	lucidtail file*.log
+	lucidtail *.log
 
 #### Monitor UDP
 
@@ -68,4 +75,12 @@ Monitor UDP messages on port 514 (syslog). This requires root access on most sys
 
 #### Guess.
 
-	lucidtail file*.log -u 514
+	lucidtail *.log -u 514
+
+lucidTAIL Module
+----------------
+
+The following assume you have either `npm install lucidtail` or added lucidtail to
+your `package.json`.
+
+### Examples
