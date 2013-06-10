@@ -6,12 +6,6 @@ new lines added to any monitored files, new UDP messages, and those emitted by o
 [EventEmitters](http://nodejs.org/api/events.html#events_class_events_eventemitter)
 to your browser.
 
-Table of Contents
------------------
-
-1. [`lucidtail` Command](#lucidtail-command)
-2. [lucidtail Module](#lucidtail-module)
-
 `lucidtail` Command
 -------------------
 
@@ -45,18 +39,9 @@ Clone lucidTAIL:
 You should now be able to use `lucidtail/index.js` or `node lucidtail/index.js`
 instead of `lucidtail`.
 
-### Usage `--help`
+### Usage
 
-	A real-time zero-configuration web-based tail
-	Usage: lucidtail [options] [file ...]
-
-	Options:
-	  -h, --help, -?   Show this help                                                       [boolean]  [default: false]
-	  --http_host      Specify the http host lucidtail services                           
-	  -p, --http_port  Specify the http port lucidtail services. (0 = random port)          [default: 8080]
-	  -u, --udp4       Emit incoming UDP messages on the specified port                   
-	  -t, --test       Emit a test log message every second with the specified source name
-	  -o, --of         Broadcast on a given socket.io namespace.                          
+	Please see `lucidtail --help`
 
 ### Examples
 
@@ -91,17 +76,15 @@ The examples assume you have either added lucidtail to your `package.json` or ex
 
 Create an instance of lucidTAIL which services the default port (port 8080):
 
-	var lucidtail = require('lucidtail');
-	lucidtail()
-		.listen(lucidtail.emitter('test'));
+	require('lucidtail')()
+		.use('test');
 
 #### UDP
 
 The following will display all inbound UDP packets on port 1337:
 
-	var lucidtail = require('lucidtail');
-	lucidtail()
-		.listen(lucidtail.emitter('udp4', 1337));
+	require('lucidtail')()
+		.use('udp4', 1337);
 
 **Note**: Port 80 and 514 are usually restricted ports and may require root/Administrator
 privileges.
@@ -123,7 +106,7 @@ The following will display inbound syslog messages (port 514) on HTTP port 80:
 	// Use a simple regex to parse out the values in the message
 	// Not even RFC 3164, but this is just an example.
 	var regex = /(<\d+>)?(\w{3} +\d+ \d{2}:\d{2}:\d{2})?( \w+)?( \w+\[?\d*\]?)?: (.*)/;
-	var syslog = lazy(lucidtail.createEmitter('udp4', 514))
+	var syslog = lazy(lucidtail.emitter('udp4', 514))
 		.map(function(data) {
 			var matches = data.data.match(regex);
 			if (matches) {
@@ -149,4 +132,48 @@ The following will display inbound syslog messages (port 514) on HTTP port 80:
 API
 ---
 
-Still rapidly evolving - Come back in version 0.1.0
+The API is exposed by `require('lucidtail')` and is still rapidly evolving, but the gist
+of it is:
+
+### `lucidtail([server|port=8080][, options])`
+
+A connivence method which returns an instance of `lucidtail.Aggregator`. All events
+emitted by returned `lucidtail.Aggregator` will be sent through a socket.io socket to 
+users.
+
+ * 'server|port': either a `http.Server` or a port (default = 8080)
+ * 'options': the options object
+ ** 'host': http host to listen to (default = `INADDR_ANY`)
+ ** 'of': socket.io namespace to use
+
+### `lucidtail.Aggregator`
+
+A sub class of `events.EventEmitter`.
+
+#### `lucidtail.Aggregator.pipe(destination[, events])`
+
+Forward events to a destination
+[`events.EventEmitter`](http://nodejs.org/api/events.html#events_class_events_eventemitter).
+
+ * `destination`: An `events.EventEmitter`
+ * `events`: An array of events to forward (default: ['data', 'error']) or an object whose
+ key/value pairs are used to map source events (keys) to destination events (value).
+
+#### `lucidtail.Aggregator.listen(source[, events])`
+
+The opposite of `lucidtail.Aggregator.pipe(destination[, events])`.
+
+### `lucidtail.emitter(name[, arg1, arg2])`
+
+A connivence method which creates `events.EventEmitter`s which emit.
+
+ * `name` may be:
+ ** 'tail': `tail` a file specified by arg1 (default: 'test')
+ ** 'test': Emit a test message every second
+ ** 'udp': Emit inbound UDP messages on a port specified by arg1
+ ** 'socketio': Pipes emitted events to a socket.io socket servicing `http.Server` arg1.
+ *** 'of': socket.io namespace to use
+
+### `lucidtail.client()`
+
+Creates a `http.Server` request handler which serves client-side resources.
