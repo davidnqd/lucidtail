@@ -137,8 +137,8 @@ of it is:
 
 ### `lucidtail([server|port=8080][, options])`
 
-A connivence method which returns an instance of `lucidtail.Aggregator`. All events
-emitted by returned `lucidtail.Aggregator` will be sent through a socket.io socket to 
+A convenience method which returns an instance of `lucidtail.Aggregator`. All events
+emitted by the returned `lucidtail.Aggregator` will be sent through a socket.io socket to 
 users.
 
  * 'server|port': either a `http.Server` or a port (default = 8080)
@@ -148,14 +148,13 @@ users.
 
 ### `lucidtail.Aggregator`
 
-A sub class of `events.EventEmitter`.
+A sub class of [`events.EventEmitter`](http://nodejs.org/api/events.html#events_class_events_eventemitter).
 
 #### `lucidtail.Aggregator.pipe(destination[, events])`
 
-Forward events to a destination
-[`events.EventEmitter`](http://nodejs.org/api/events.html#events_class_events_eventemitter).
+Forward events to a destination `events.EventEmitter`.
 
- * `destination`: An `events.EventEmitter`
+ * `destination`: Destination `events.EventEmitter`
  * `events`: An array of events to forward (default: ['data', 'error']) or an object whose
  key/value pairs are used to map source events (keys) to destination events (value).
 
@@ -172,7 +171,6 @@ A connivence method which creates `events.EventEmitter`s which emit.
  ** 'test': Emit a test message every second
  ** 'udp': Emit inbound UDP messages on a port specified by arg1
  ** 'socketio': Pipes emitted events to a socket.io socket servicing `http.Server` arg1.
- *** 'of': socket.io namespace to use
 
 ### `lucidtail.client()`
 
