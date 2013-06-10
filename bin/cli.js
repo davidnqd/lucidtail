@@ -38,7 +38,11 @@ var optimist = require('optimist')
     .describe('u', 'Emit incoming UDP messages on the specified port')
 
     .alias('t', 'test')
-    .describe('t', 'Emit a test log message every second with the specified source name');
+    .describe('t', 'Emit a test log message every second with the specified source name')
+
+    .alias('o', 'of')
+    .describe('o', 'Broadcast on a given socket.io namespace.')
+    ;
 
 // Show usage
 if (optimist.argv.help) {
@@ -49,17 +53,16 @@ if (optimist.argv.help) {
 // Create server
 var connect = require('connect');
 var app = connect()
-	.use('/', connect.static(__dirname + '/../client'));
-
-server = app.listen(optimist.argv.http_port);
+	.use('/', connect.static(__dirname + '/../client'))
+	.listen(optimist.argv.http_port);
 
 // Create aggregate emitter
 var lucidtail = require('../lib');
-var emitter = new lucidtail.Aggregator(server)
+var emitter = new lucidtail.Aggregator(app)
 	// Send errors to stderr
 	.on('error', console.error.bind(console))
 	// Send events to socket.io
-	.pipe(lucidtail.createEmitter('socketio', server));
+	.pipe(lucidtail.createEmitter('socketio', app, {emitter: emitter, of: optimist.argv.of}));
 
 // Use Test listener
 if (optimist.argv.test) {
@@ -75,7 +78,6 @@ if (optimist.argv.udp4) {
 }
 
 // Use file listeners
-// FIXME: Use a native approach instead of tail: e.g. fs.watch
 for (var i = 0; i < optimist.argv._.length; i++) {
 	console.log('Recognized --file:', optimist.argv._[i]);
 	emitter.listen(lucidtail.createEmitter('tail', optimist.argv._[i]));
