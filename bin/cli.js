@@ -46,11 +46,20 @@ if (optimist.argv.help) {
 	process.exit(0);
 }
 
+// Create server
+var connect = require('connect');
+var app = connect()
+	.use('/', connect.static(__dirname + '/../client'));
+
+server = app.listen(optimist.argv.http_port);
+
 // Create aggregate emitter
 var lucidtail = require('../lib');
-var emitter = new lucidtail(optimist.argv.http_port)
-	// Log errors to stderr
-	.on('error', console.error.bind(console));
+var emitter = new lucidtail.Aggregator(server)
+	// Send errors to stderr
+	.on('error', console.error.bind(console))
+	// Send events to socket.io
+	.pipe(lucidtail.createEmitter('socketio', server));
 
 // Use Test listener
 if (optimist.argv.test) {
