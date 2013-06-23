@@ -55,6 +55,7 @@
 			.asHighlighter($( '#highlight-filter' ))
 			.asFilter($( '#tail-sources' ), 'source')
 			.asPause($('#tail-pause'))
+			.asClear($('#tail-clear'))
 			.listen(io.connect(getQuerystring('of')));
 	});
 	</script>
@@ -80,6 +81,7 @@
 	</div>
 </div>
 <input type="checkbox" id="tail-pause" /><label for="tail-pause">&#10074;&#10074; Pause</label>
+<input type="button" id="tail-clear" value="Clear" />
 <div id='tail-results' class='results'></div>
 </body>
 </html>

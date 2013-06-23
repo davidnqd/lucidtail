@@ -107,19 +107,28 @@ Client.prototype = {
 				return false;
 			},
 			select: function( event, ui ) {
-				var terms = split( this.value );
+				var terms;
+				if (element.val()) {
+					terms = split(element.val());
+					terms.pop();
+				} else {
+					terms = [];
+				}
 				terms.push( ui.item.value, '' );
-				element.val(terms.join( ', ' ));
+				this.value = terms.join( ', ' );
 				element.change();
 				return false;
 			}
 		});
 
 		self.callbacks.push(function (node) {
-			var elementValue = element.val().toLowerCase();
-			var values = elementValue? split( elementValue ) : [];
-			if (values.length > 0 && values.indexOf(node.data(key).toLowerCase()) == -1)
-				node.hide();
+			var elementValue = element.val();
+			var nodeData = node.data(key);
+			if (elementValue && nodeData !== null) {
+				var values = split( elementValue.toLowerCase() );
+				if (values.length > 0 && values.indexOf(nodeData.toLowerCase()) == -1)
+					node.hide();
+			}
 		});
 
 		element.change(self.refresh.bind(self));
@@ -143,8 +152,10 @@ Client.prototype = {
 			if (typeof event[key] == 'string') {
 				value = event[key].toLowerCase();
 				node.data(key, value);
-				if (self.attributesCache[key] === undefined)
+				if (self.attributesCache[key] === undefined) {
 					self.attributesCache[key] = {};
+					// add filter
+				}
 				self.attributesCache[key][value] = true;
 			}
 		}
