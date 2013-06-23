@@ -18,8 +18,10 @@
 		You should have received a copy of the GNU Affero General Public License
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
-function Client(input) {
+function Client() {
 	this.resultsPane = $();
+	this.filterTab = $();
+	this.highlightTab = $();
 	this.callbacks = [];
 	this.attributesCache = {};
 }
@@ -52,16 +54,10 @@ Client.prototype = {
 		return this;
 	},
 
-	asResultsPane: function (element) {
-		this.resultsPane = this.resultsPane.add(element);
-
-		return this;
-	},
-
 	asMessageFilter: function (element) {
 		this.callbacks.push(function (node) {
-			var elementValue = element.val().toLowerCase();
-			if (elementValue && node.text().toLowerCase().indexOf(elementValue) == -1)
+			var elementValue = element.val();
+			if (elementValue && node.text().toLowerCase().indexOf(elementValue.toLowerCase()) === -1)
 				node.hide();
 		});
 
@@ -72,12 +68,9 @@ Client.prototype = {
 
 	asHighlighter: function (element, key) {
 		this.callbacks.push(function (node) {
-			var elementValue = element.val().toLowerCase();
-			if (elementValue && node.text().toLowerCase().indexOf(elementValue) > -1) {
+			var elementValue = element.val();
+			if (elementValue && node.text().toLowerCase().indexOf(elementValue.toLowerCase()) !== -1)
 				node.css('background-color', 'yellow');
-			} else {
-				node.css('background-color', '');
-			}
 		});
 
 		element.change(this.refresh.bind(this));
@@ -85,54 +78,18 @@ Client.prototype = {
 		return this;
 	},
 
-	asFilter: function (element, key) {
-		var self = this;
-		key = key.toLowerCase();
-		element.on( 'keydown', function( event ) {
-			if ( event.keyCode === $.ui.keyCode.TAB && $(this).data('ui-autocomplete').menu.active ) {
-				event.preventDefault();
-			}
-		});
-		element.autocomplete({
-			minLength: 0,
-			source: function( request, response ) {
-				if (self.attributesCache[key]) {
-					var all = Object.keys(self.attributesCache[key]);
-					var selected = split( request.term );
-					response( all.filter(function (e) { return selected.indexOf(e) < 0; }) );
-				}
-			},
-			focus: function() {
-				// prevent value inserted on focus
-				return false;
-			},
-			select: function( event, ui ) {
-				var terms;
-				if (element.val()) {
-					terms = split(element.val());
-					terms.pop();
-				} else {
-					terms = [];
-				}
-				terms.push( ui.item.value, '' );
-				this.value = terms.join( ', ' );
-				element.change();
-				return false;
-			}
-		});
+	asResultsPane: function(element) {
+		this.resultsPane = $(element);
+		return this;
+	},
 
-		self.callbacks.push(function (node) {
-			var elementValue = element.val();
-			var nodeData = node.data(key);
-			if (elementValue && nodeData !== null) {
-				var values = split( elementValue.toLowerCase() );
-				if (values.length > 0 && values.indexOf(nodeData.toLowerCase()) == -1)
-					node.hide();
-			}
-		});
+	asHighlightTab: function(element) {
+		this.highlightTab = $(element);
+		return this;
+	},
 
-		element.change(self.refresh.bind(self));
-
+	asFilterTab: function(element) {
+		this.filterTab = $(element);
 		return this;
 	},
 
@@ -154,14 +111,25 @@ Client.prototype = {
 				node.data(key, value);
 				if (self.attributesCache[key] === undefined) {
 					self.attributesCache[key] = {};
-					// add filter
+
+					self.filterTab.append(
+						createAutocomplete(self, key, function(node, matches) {
+							if (!matches) node.hide();
+						})
+					);
+
+					self.highlightTab.append(
+						createAutocomplete(self, key, function(node, matches) {
+							if (matches) node.css('background-color', 'yellow');
+						})
+					);
 				}
 				self.attributesCache[key][value] = true;
 			}
 		}
 
 		node.on('refresh', function () {
-			node.show();
+			node.removeAttr('style');
 			for (var j = 0; j < self.callbacks.length; j++) {
 				self.callbacks[j](node);
 			}
@@ -178,6 +146,58 @@ Client.prototype = {
 		return this;
 	}
 };
+
+function createAutocomplete (self, key, callback) {
+	key = key.toLowerCase();
+
+	var element = $('<input />').uniqueId();
+
+	element.on( 'keydown', function( event ) {
+		if ( event.keyCode === $.ui.keyCode.TAB && $(this).data('ui-autocomplete').menu.active ) {
+			event.preventDefault();
+		}
+	});
+	element.autocomplete({
+		minLength: 0,
+		source: function( request, response ) {
+			if (self.attributesCache[key]) {
+				var all = Object.keys(self.attributesCache[key]);
+				var selected = split( request.term );
+				response( all.filter(function (e) { return selected.indexOf(e) < 0; }) );
+			}
+		},
+		focus: function() {
+			// prevent value inserted on focus
+			return false;
+		},
+		select: function( event, ui ) {
+			var terms;
+			if (element.val()) {
+				terms = split(element.val());
+				terms.pop();
+			} else {
+				terms = [];
+			}
+			terms.push( ui.item.value, '' );
+			this.value = terms.join( ', ' );
+			element.change();
+			return false;
+		}
+	});
+
+	self.callbacks.push(function (node) {
+		var elementValue = element.val();
+		var nodeData = node.data(key);
+		if (elementValue && nodeData !== null) {
+			var values = split( elementValue.toLowerCase() );
+			if (values.length > 0)
+				callback(node, values.indexOf(nodeData.toLowerCase()) != -1);
+		}
+	});
+
+	element.change(self.refresh.bind(self));
+	return $('<label />', {label: element.attr('id'), text: key}).add(element);
+}
 
 function split( val ) {
 	return val.replace(/^[\s,]+|[\s,]+$/g, '').split( /\s*,\s*/ );

@@ -67,9 +67,14 @@ summary {
 	cursor: pointer;
 }
 
-#tail-tabs label {
+.ui-tabs-panel input {
+	width: 29em;
+}
+
+.ui-tabs-panel label {
 	width: 10em;
 	display: inline-block;
+	text-transform: capitalize;
 }
 
 .ui-tabs-vertical { width: 55em; }
