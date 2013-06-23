@@ -51,11 +51,10 @@
 
 		new Client()
 			.asResultsPane($( '#tail-results' ))
-			.asFilter($( '#tail-sources' ), 'source')
 			.asMessageFilter($( '#tail-filter' ))
 			.asHighlighter($( '#highlight-filter' ))
+			.asFilter($( '#tail-sources' ), 'source')
 			.asPause($('#tail-pause'))
-			.asClear($('#tail-clear'))
 			.listen(io.connect(getQuerystring('of')));
 	});
 	</script>
@@ -68,10 +67,10 @@
 		<li><a href='#tail-highlight-tab'>Highlight</a></li>
 	</ul>
 	<div id='tail-filter-tab'>
-		<label for='tail-sources'>Sources: </label>
-		<input id='tail-sources' size='50' /> <br/>
 		<label for='tail-filter'>Message: </label>
 		<input id='tail-filter' size='50' />
+		<label for='tail-sources'>Sources: </label>
+		<input id='tail-sources' size='50' /> <br/>
 		<p>Show events which match <em>all</em> filters.</p>
 	</div>
 	<div id='tail-highlight-tab'>
@@ -81,7 +80,6 @@
 	</div>
 </div>
 <input type="checkbox" id="tail-pause" /><label for="tail-pause">&#10074;&#10074; Pause</label>
-<input type="button" id="tail-clear" value="Clear" />
 <div id='tail-results' class='results'></div>
 </body>
 </html>

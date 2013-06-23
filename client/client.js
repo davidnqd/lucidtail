@@ -20,7 +20,6 @@
 */
 function Client(input) {
 	this.resultsPane = $();
-	this.filters = [];
 	this.callbacks = [];
 	this.attributesCache = {};
 }
@@ -45,8 +44,9 @@ Client.prototype = {
 			self.refresh();
 		});
 		
-		self.filters.push(function (child) {
-			return !pauseTime || new Date(child.data(Client.RECIEVED_KEY)) < pauseTime;
+		self.callbacks.push(function (node) {
+			if (pauseTime && new Date(node.data(Client.RECIEVED_KEY)) >= pauseTime)
+				node.hide();
 		});
 
 		return this;
@@ -59,9 +59,10 @@ Client.prototype = {
 	},
 
 	asMessageFilter: function (element) {
-		this.filters.push(function (child) {
+		this.callbacks.push(function (node) {
 			var elementValue = element.val().toLowerCase();
-			return !elementValue || child.text().toLowerCase().indexOf(elementValue) > -1;
+			if (elementValue && node.text().toLowerCase().indexOf(elementValue) == -1)
+				node.hide();
 		});
 
 		element.change(this.refresh.bind(this));
@@ -70,12 +71,12 @@ Client.prototype = {
 	},
 
 	asHighlighter: function (element, key) {
-		this.callbacks.push(function (child) {
+		this.callbacks.push(function (node) {
 			var elementValue = element.val().toLowerCase();
-			if (elementValue && child.text().toLowerCase().indexOf(elementValue) > -1) {
-				child.css('background-color', 'yellow');
+			if (elementValue && node.text().toLowerCase().indexOf(elementValue) > -1) {
+				node.css('background-color', 'yellow');
 			} else {
-				child.css('background-color', '');
+				node.css('background-color', '');
 			}
 		});
 
@@ -106,7 +107,7 @@ Client.prototype = {
 				return false;
 			},
 			select: function( event, ui ) {
-				var terms = (element.val())? split(element.val()) : [];
+				var terms = split( this.value );
 				terms.push( ui.item.value, '' );
 				element.val(terms.join( ', ' ));
 				element.change();
@@ -114,10 +115,11 @@ Client.prototype = {
 			}
 		});
 
-		self.filters.push(function (child) {
+		self.callbacks.push(function (node) {
 			var elementValue = element.val().toLowerCase();
 			var values = elementValue? split( elementValue ) : [];
-			return values.length <= 0 || values.indexOf(child.attr('data-' + key).toLowerCase()) != -1;
+			if (values.length > 0 && values.indexOf(node.data(key).toLowerCase()) == -1)
+				node.hide();
 		});
 
 		element.change(self.refresh.bind(self));
@@ -137,10 +139,10 @@ Client.prototype = {
 			key = key.toLowerCase();
 			definition.append( $('<dt />', {text: key}) )
 						.append( $('<dd />', {text: JSON.stringify(event[key], undefined, 2) }) );
-			node.attr('data-' + Client.RECIEVED_KEY, +new Date);
+			node.data(Client.RECIEVED_KEY, +new Date);
 			if (typeof event[key] == 'string') {
 				value = event[key].toLowerCase();
-				node.attr('data-' + key, value);
+				node.data(key, value);
 				if (self.attributesCache[key] === undefined)
 					self.attributesCache[key] = {};
 				self.attributesCache[key][value] = true;
@@ -148,17 +150,9 @@ Client.prototype = {
 		}
 
 		node.on('refresh', function () {
-			var visible = true;
-			for (var j = 0; visible !== false && j < self.filters.length; j++) {
-				visible = self.filters[j](node);
-			}
-			if (visible) {
-				self.callbacks.forEach(function (callback) {
-					callback(node);
-				});
-				node.show();
-			} else {
-				node.hide();
+			node.show();
+			for (var j = 0; j < self.callbacks.length; j++) {
+				self.callbacks[j](node);
 			}
 		});
 

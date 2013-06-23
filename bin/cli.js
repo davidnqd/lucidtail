@@ -60,7 +60,7 @@ var emitter = lucidtail(optimist.argv.http_port, {host: optimist.argv.http_host,
 if (optimist.argv.test) {
 	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
 	console.log('Recognized --test:', arg);
-	emitter.use('test', optimist.argv.test);
+	emitter.use('test', arg);
 }
 
 // Use UDP4 listener
