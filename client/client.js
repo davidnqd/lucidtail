@@ -20,6 +20,7 @@
 */
 // TODO: This class is responsible for a few too many things..
 // There are a few widgets and an event emitter in here.
+// TODO: Rework 'refresh'. Make it work, make it right, make it fast.
 function Client(resultsPane) {
 	this.resultsPane = $(resultsPane);
 	this.tabs = [];
@@ -59,8 +60,8 @@ Client.prototype = {
 				}
 			}
 
+			node.on('refresh', node.removeAttr.bind(node, 'style'));
 			node.on('refresh', function () {
-				node.removeAttr('style');
 				for (var j = 0; j < self.callbacks.length; j++) {
 					self.callbacks[j](node);
 				}
@@ -144,14 +145,8 @@ Client.prototype = {
 				return false;
 			},
 			select: function( event, ui ) {
-				var terms;
-				if (element.val()) {
-					terms = split(element.val());
-					terms.pop();
-				} else {
-					terms = [];
-				}
-				terms.push( ui.item.value, '' );
+				var terms = split(element.val());
+				terms.splice(-1, 1, ui.item.value, '');
 				this.value = terms.join( ', ' );
 				element.change();
 				return false;
@@ -174,5 +169,5 @@ Client.prototype = {
 };
 
 function split( val ) {
-	return val.replace(/^[\s,]+|[\s,]+$/g, '').split( /\s*,\s*/ );
+	return val.replace(/^[\s,]+|\s+$/g, '').split( /\s*,\s*/ );
 }
