@@ -18,17 +18,58 @@
 		You should have received a copy of the GNU Affero General Public License
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
-function Client() {
-	this.resultsPane = $();
-	this.filterTab = $();
-	this.highlightTab = $();
+// TODO: This class is responsible for a few too many things..
+// There are a few widgets and an event emitter in here.
+function Client(resultsPane) {
+	this.resultsPane = $(resultsPane);
+	this.tabs = [];
 	this.callbacks = [];
 	this.attributesCache = {};
 }
 Client.RECIEVED_KEY = '_received'
 Client.prototype = {
 	listen: function (emitter) {
-		emitter.on('data', this.addEvent.bind(this));
+		var self = this;
+
+		emitter.on('data', function (event) {
+			var definition = $('<dl />');
+			var node = $('<details />')
+						.append($('<summary />', {text: event.data}), definition);
+			delete event.data;
+
+			var value;
+			for (var key in event) {
+				key = key.toLowerCase();
+				definition.append( $('<dt />', {text: key}) )
+							.append( $('<dd />', {text: JSON.stringify(event[key], undefined, 2) }) );
+				node.data(Client.RECIEVED_KEY, +new Date);
+				if (typeof event[key] == 'string') {
+					value = event[key].toLowerCase();
+					node.data(key, value);
+					if (self.attributesCache[key] === undefined) {
+						self.attributesCache[key] = {};
+
+						self.tabs.forEach(function (tab) {
+							tab.element.append(
+								self.createAutocomplete(key, tab.callback)
+							);
+						});
+					}
+					self.attributesCache[key][value] = true;
+				}
+			}
+
+			node.on('refresh', function () {
+				node.removeAttr('style');
+				for (var j = 0; j < self.callbacks.length; j++) {
+					self.callbacks[j](node);
+				}
+			});
+
+			self.resultsPane.prepend(node);
+			node.trigger('refresh');
+			return node;
+		});
 		return this;
 	},
 
@@ -54,150 +95,83 @@ Client.prototype = {
 		return this;
 	},
 
-	asMessageFilter: function (element) {
+	asTab: function(element, callback) {
+		var tab = {element: element, callback: callback};
+		this.tabs.push(tab);
+
+		var field = $('<input />').uniqueId();
+
 		this.callbacks.push(function (node) {
-			var elementValue = element.val();
-			if (elementValue && node.text().toLowerCase().indexOf(elementValue.toLowerCase()) === -1)
-				node.hide();
+			var fieldValue = field.val();
+			if (fieldValue)
+				callback(node, node.text().toLowerCase().indexOf(fieldValue.toLowerCase()) !== -1);
 		});
 
-		element.change(this.refresh.bind(this));
+		field.change(this.refresh.bind(this));
+
+		element.append( $('<label />', {label: field.attr('id'), text: 'Message'}).add(field) );
 
 		return this;
-	},
-
-	asHighlighter: function (element, key) {
-		this.callbacks.push(function (node) {
-			var elementValue = element.val();
-			if (elementValue && node.text().toLowerCase().indexOf(elementValue.toLowerCase()) !== -1)
-				node.css('background-color', 'yellow');
-		});
-
-		element.change(this.refresh.bind(this));
-
-		return this;
-	},
-
-	asResultsPane: function(element) {
-		this.resultsPane = $(element);
-		return this;
-	},
-
-	asHighlightTab: function(element) {
-		this.highlightTab = $(element);
-		return this;
-	},
-
-	asFilterTab: function(element) {
-		this.filterTab = $(element);
-		return this;
-	},
-
-	addEvent: function (event) {
-		var self = this;
-		var definition = $('<dl />');
-		var node = $('<details />')
-					.append($('<summary />', {text: event.data}), definition);
-		delete event.data;
-
-		var value;
-		for (var key in event) {
-			key = key.toLowerCase();
-			definition.append( $('<dt />', {text: key}) )
-						.append( $('<dd />', {text: JSON.stringify(event[key], undefined, 2) }) );
-			node.data(Client.RECIEVED_KEY, +new Date);
-			if (typeof event[key] == 'string') {
-				value = event[key].toLowerCase();
-				node.data(key, value);
-				if (self.attributesCache[key] === undefined) {
-					self.attributesCache[key] = {};
-
-					self.filterTab.append(
-						createAutocomplete(self, key, function(node, matches) {
-							if (!matches) node.hide();
-						})
-					);
-
-					self.highlightTab.append(
-						createAutocomplete(self, key, function(node, matches) {
-							if (matches) node.css('background-color', 'yellow');
-						})
-					);
-				}
-				self.attributesCache[key][value] = true;
-			}
-		}
-
-		node.on('refresh', function () {
-			node.removeAttr('style');
-			for (var j = 0; j < self.callbacks.length; j++) {
-				self.callbacks[j](node);
-			}
-		});
-
-		self.resultsPane.prepend(node);
-		node.trigger('refresh');
-		return node;
 	},
 
 	refresh: function () {
 		this.resultsPane.children().trigger('refresh');
-
 		return this;
+	},
+
+	createAutocomplete: function (key, callback) {
+		var self = this;
+		key = key.toLowerCase();
+
+		var element = $('<input />').uniqueId();
+
+		element.on( 'keydown', function( event ) {
+			if ( event.keyCode === $.ui.keyCode.TAB && $(this).data('ui-autocomplete').menu.active ) {
+				event.preventDefault();
+			}
+		});
+		element.autocomplete({
+			minLength: 0,
+			source: function( request, response ) {
+				if (self.attributesCache[key]) {
+					var all = Object.keys(self.attributesCache[key]);
+					var selected = split( request.term );
+					response( all.filter(function (e) { return selected.indexOf(e) < 0; }) );
+				}
+			},
+			focus: function() {
+				// prevent value inserted on focus
+				return false;
+			},
+			select: function( event, ui ) {
+				var terms;
+				if (element.val()) {
+					terms = split(element.val());
+					terms.pop();
+				} else {
+					terms = [];
+				}
+				terms.push( ui.item.value, '' );
+				this.value = terms.join( ', ' );
+				element.change();
+				return false;
+			}
+		});
+
+		self.callbacks.push(function (node) {
+			var elementValue = element.val();
+			var nodeData = node.data(key);
+			if (elementValue && nodeData !== null) {
+				var values = split( elementValue.toLowerCase() );
+				if (values.length > 0)
+					callback(node, values.indexOf(nodeData.toLowerCase()) != -1);
+			}
+		});
+
+		element.change(self.refresh.bind(self));
+		return $('<label />', {label: element.attr('id'), text: key}).add(element);
 	}
 };
-
-function createAutocomplete (self, key, callback) {
-	key = key.toLowerCase();
-
-	var element = $('<input />').uniqueId();
-
-	element.on( 'keydown', function( event ) {
-		if ( event.keyCode === $.ui.keyCode.TAB && $(this).data('ui-autocomplete').menu.active ) {
-			event.preventDefault();
-		}
-	});
-	element.autocomplete({
-		minLength: 0,
-		source: function( request, response ) {
-			if (self.attributesCache[key]) {
-				var all = Object.keys(self.attributesCache[key]);
-				var selected = split( request.term );
-				response( all.filter(function (e) { return selected.indexOf(e) < 0; }) );
-			}
-		},
-		focus: function() {
-			// prevent value inserted on focus
-			return false;
-		},
-		select: function( event, ui ) {
-			var terms;
-			if (element.val()) {
-				terms = split(element.val());
-				terms.pop();
-			} else {
-				terms = [];
-			}
-			terms.push( ui.item.value, '' );
-			this.value = terms.join( ', ' );
-			element.change();
-			return false;
-		}
-	});
-
-	self.callbacks.push(function (node) {
-		var elementValue = element.val();
-		var nodeData = node.data(key);
-		if (elementValue && nodeData !== null) {
-			var values = split( elementValue.toLowerCase() );
-			if (values.length > 0)
-				callback(node, values.indexOf(nodeData.toLowerCase()) != -1);
-		}
-	});
-
-	element.change(self.refresh.bind(self));
-	return $('<label />', {label: element.attr('id'), text: key}).add(element);
-}
 
 function split( val ) {
 	return val.replace(/^[\s,]+|[\s,]+$/g, '').split( /\s*,\s*/ );
