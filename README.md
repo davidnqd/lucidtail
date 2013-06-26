@@ -9,8 +9,8 @@ to your browser.
 `lucidtail` Command
 -------------------
 
-lucidTAIL comes with a simple command (`lucidtail`) which listens to a number of specified
-source and displays them in a pretty little web application.
+The `lucidtail` command listens to specified sources and displays them in a pretty little
+web application.
 
 To quickly be able to view your logs at [http://localhost:8080](http://localhost:8080):
 
@@ -41,7 +41,7 @@ instead of `lucidtail`.
 
 ### Usage
 
-	Please see `lucidtail --help`
+Please see `lucidtail --help`
 
 ### Examples
 
