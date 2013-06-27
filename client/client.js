@@ -44,7 +44,7 @@ Client.prototype = {
 				definition.append( $('<dt />', {text: key}) )
 							.append( $('<dd />', {text: JSON.stringify(event[key], undefined, 2) }) );
 				node.data(Client.RECIEVED_KEY, +new Date);
-				if (typeof event[key] == 'string') {
+				if (typeof event[key] == 'string' && key[0] != '_') {
 					value = event[key].toLowerCase();
 					node.data(key, value);
 					if (self.attributesCache[key] === undefined) {
@@ -105,7 +105,7 @@ Client.prototype = {
 		this.callbacks.push(function (node) {
 			var fieldValue = field.val();
 			if (fieldValue)
-				callback(node, node.text().toLowerCase().indexOf(fieldValue.toLowerCase()) !== -1);
+				callback(node, node.children('summary').text().toLowerCase().indexOf(fieldValue.toLowerCase()) !== -1);
 		});
 
 		field.change(this.refresh.bind(this));

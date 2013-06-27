@@ -42,6 +42,9 @@ var optimist = require('optimist')
     .alias('t', 'test')
     .describe('t', 'Emit a test log message every second with the specified source name')
 
+    .alias('m', 'mongodb')
+    .describe('m', 'Use the mongodb database specified at the given url')
+
     .alias('o', 'of')
     .describe('o', 'Broadcast on a given socket.io namespace.')
     ;
@@ -54,7 +57,14 @@ if (optimist.argv.help) {
 
 // require lucidtail
 var lucidtail = require('../lib');
-var emitter = lucidtail(optimist.argv.http_port, {host: optimist.argv.http_host, of: optimist.argv.of});
+var options = {host: optimist.argv.http_host, of: optimist.argv.of};
+
+if (optimist.argv.mongodb) {
+	console.log('Recognized --mongodb:', optimist.argv.mongodb);
+	options.aggregator = lucidtail.emitter('mongodb', optimist.argv.mongodb);
+}
+
+var emitter = lucidtail(optimist.argv.http_port, options);
 
 // Use Test listener
 if (optimist.argv.test) {
