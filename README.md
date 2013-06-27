@@ -21,7 +21,7 @@ To quickly be able to view your logs at [http://localhost:8080](http://localhost
 
 You must already have [nodejs](http://nodejs.org/download/) installed.
 
-#### Simple
+#### Method: Simple
 
 To install lucidTAIL globally:
 
@@ -30,7 +30,7 @@ To install lucidTAIL globally:
 This allows you to use the `lucidtail` command. You may need root/Administrator access, if
 you don't have it you can alternately get lucidTAIL from the [git repository](#from-git).
 
-#### From GIT
+#### Method: From GIT
 
 Clone lucidTAIL:
 
@@ -59,9 +59,14 @@ Monitor UDP messages on port 514 (syslog). This requires root access on most sys
 
 	lucidtail -u 514
 
-#### Guess.
+#### Publish on port 1337
 
-	lucidtail *.log -u 514
+ * Monitor all files ending with '.log'.
+ * Monitor UDP messages on port 514 (syslog). This requires root access on most systems.
+ * Publish on port 1337 (default: 8080)
+
+	lucidtail *.log -u 514 -p 1337
+
 
 Advanced Setups
 ---------------
