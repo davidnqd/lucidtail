@@ -60,14 +60,15 @@ Monitors all files ending with '.log'.
 
 Monitors UDP messages on syslog port 514 (which requires root access on most systems).
 
-#### Publish on port 1337
+#### Publish on port 80
 
-	lucidtail *.log -u 514 -p 1337
+	sudo lucidtail *.log -u 514 -p 80
 
  * Monitor all files ending with '.log'.
  * Monitor UDP messages on port 514 (syslog).
 	* This requires root access on most systems.
- * Publish on port 1337
+ * Publish on port 80
+	* This requires root access on most systems.
 
 Advanced Setups
 ---------------
@@ -80,24 +81,22 @@ The examples assume you have either added lucidtail to your `package.json` or ex
 
 #### Test
 
-Create an instance of lucidTAIL which services the default port (port 8080):
-
 	require('lucidtail')()
 		.use('test');
 
-#### UDP
+Monitors a test emitter (which sends a test message every second) and publish events
+on the default port (port 8080):
 
-The following will display all inbound UDP packets on port 1337:
+#### Raw UDP
 
 	require('lucidtail')()
-		.use('udp4', 1337);
+		.use('udp4', 5000);
 
-**Note**: Port 80 and 514 are usually restricted ports and may require root/Administrator
-privileges.
+Monitors UDP messages on port 5000.
 
 #### syslog
 
-The following will display inbound syslog messages (port 514) on HTTP port 80:
+The following will display inbound syslog messages (UDP port 514) on HTTP port 80:
 
 **Notes**:
 
