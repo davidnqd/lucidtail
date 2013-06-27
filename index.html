@@ -42,7 +42,8 @@ to your browser.</p>
 <p>The <code>lucidtail</code> command listens to specified sources and displays them in a pretty little
 web application.</p>
 
-<p>To quickly be able to view your logs at <a href="http://localhost:8080">http://localhost:8080</a>:</p>
+<p>To quickly be able to view your logs at <a href="http://localhost:8080">http://localhost:8080</a>
+(default):</p>
 
 <pre><code>npm install lucidtail -g # One time global install
 lucidtail *.log
@@ -88,29 +89,38 @@ instead of <code>lucidtail</code>.</p>
 <h4>
 <a name="monitor-files" class="anchor" href="#monitor-files"><span class="octicon octicon-link"></span></a>Monitor Files</h4>
 
-<p>Monitor all files ending with '.log'.</p>
-
 <pre><code>lucidtail *.log
 </code></pre>
+
+<p>Monitors all files ending with '.log'.</p>
 
 <h4>
 <a name="monitor-udp" class="anchor" href="#monitor-udp"><span class="octicon octicon-link"></span></a>Monitor UDP</h4>
 
-<p>Monitor UDP messages on port 514 (syslog). This requires root access on most systems.</p>
-
 <pre><code>lucidtail -u 514
 </code></pre>
 
+<p>Monitors UDP messages on syslog port 514 (which requires root access on most systems).</p>
+
 <h4>
-<a name="publish-on-port-1337" class="anchor" href="#publish-on-port-1337"><span class="octicon octicon-link"></span></a>Publish on port 1337</h4>
+<a name="publish-on-port-80" class="anchor" href="#publish-on-port-80"><span class="octicon octicon-link"></span></a>Publish on port 80</h4>
+
+<pre><code>sudo lucidtail *.log -u 514 -p 80
+</code></pre>
 
 <ul>
 <li>Monitor all files ending with '.log'.</li>
-<li>Monitor UDP messages on port 514 (syslog). This requires root access on most systems.</li>
-<li>
-<p>Publish on port 1337 (default: 8080)</p>
+<li>Monitor UDP messages on port 514 (syslog).
 
-<p>lucidtail *.log -u 514 -p 1337</p>
+<ul>
+<li>This requires root access on most systems.</li>
+</ul>
+</li>
+<li>Publish on port 80
+
+<ul>
+<li>This requires root access on most systems.</li>
+</ul>
 </li>
 </ul><h2>
 <a name="advanced-setups" class="anchor" href="#advanced-setups"><span class="octicon octicon-link"></span></a>Advanced Setups</h2>
@@ -126,28 +136,26 @@ instead of <code>lucidtail</code>.</p>
 <h4>
 <a name="test" class="anchor" href="#test"><span class="octicon octicon-link"></span></a>Test</h4>
 
-<p>Create an instance of lucidTAIL which services the default port (port 8080):</p>
-
 <pre><code>require('lucidtail')()
     .use('test');
 </code></pre>
 
-<h4>
-<a name="udp" class="anchor" href="#udp"><span class="octicon octicon-link"></span></a>UDP</h4>
+<p>Monitors a test emitter (which sends a test message every second) and publish events
+on the default port (port 8080):</p>
 
-<p>The following will display all inbound UDP packets on port 1337:</p>
+<h4>
+<a name="raw-udp" class="anchor" href="#raw-udp"><span class="octicon octicon-link"></span></a>Raw UDP</h4>
 
 <pre><code>require('lucidtail')()
-    .use('udp4', 1337);
+    .use('udp4', 5000);
 </code></pre>
 
-<p><strong>Note</strong>: Port 80 and 514 are usually restricted ports and may require root/Administrator
-privileges.</p>
+<p>Monitors UDP messages on port 5000.</p>
 
 <h4>
 <a name="syslog" class="anchor" href="#syslog"><span class="octicon octicon-link"></span></a>syslog</h4>
 
-<p>The following will display inbound syslog messages (port 514) on HTTP port 80:</p>
+<p>The following will display inbound syslog messages (UDP port 514) on HTTP port 80:</p>
 
 <p><strong>Notes</strong>:</p>
 
