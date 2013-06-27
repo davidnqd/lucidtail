@@ -12,7 +12,8 @@ to your browser.
 The `lucidtail` command listens to specified sources and displays them in a pretty little
 web application.
 
-To quickly be able to view your logs at [http://localhost:8080](http://localhost:8080):
+To quickly be able to view your logs at [http://localhost:8080](http://localhost:8080)
+(default):
 
 	npm install lucidtail -g # One time global install
 	lucidtail *.log
@@ -51,22 +52,22 @@ Please see `lucidtail --help`
 
 	lucidtail *.log
 
- * Monitor all files ending with '.log'.
+Monitors all files ending with '.log'.
 
 #### Monitor UDP
 
 	lucidtail -u 514
 
- * Monitor UDP messages on port 514 (syslog).
- * This requires root access on most systems.
+Monitors UDP messages on syslog port 514 (which requires root access on most systems).
 
 #### Publish on port 1337
 
 	lucidtail *.log -u 514 -p 1337
 
  * Monitor all files ending with '.log'.
- * Monitor UDP messages on port 514 (syslog). This requires root access on most systems.
- * Publish on port 1337 (default: 8080)
+ * Monitor UDP messages on port 514 (syslog).
+	* This requires root access on most systems.
+ * Publish on port 1337
 
 Advanced Setups
 ---------------
