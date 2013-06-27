@@ -46,18 +46,18 @@
 	}
 
 	$(function() {
-		$( '#tail-tabs' ).tabs().addClass( 'ui-tabs-vertical ui-helper-clearfix' );
-		$( '#tail-tabs li' ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-left' );
+		$( '#tabs' ).tabs().addClass( 'ui-tabs-vertical ui-helper-clearfix' );
+		$( '#tabs li' ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-left' );
 
-		new Client($('#tail-results'))
-			.asTab($('#tail-filter-tab'), function(node, matches) {
+		new Client($('#results'))
+			.asTab($('#filter-tab'), function(node, matches) {
 				if (!matches) node.hide();
 			})
-			.asTab($('#tail-highlight-tab'), function(node, matches) {
+			.asTab($('#highlight-tab'), function(node, matches) {
 				if (matches) node.css('background-color', 'yellow');
 			})
-			.asPause($('#tail-pause'))
-			.asClear($('#tail-clear'))
+			.asPause($('#pause'))
+			.asClear($('#clear'))
 			.listen(io.connect(getQuerystring('of')))
 			;
 	});
@@ -65,20 +65,20 @@
 </head>
 <body>
 
-<div id='tail-tabs'>
+<div id='tabs'>
 	<ul>
-		<li><a href='#tail-filter-tab'>Filter</a></li>
-		<li><a href='#tail-highlight-tab'>Highlight</a></li>
+		<li><a href='#filter-tab'>Filter</a></li>
+		<li><a href='#highlight-tab'>Highlight</a></li>
 	</ul>
-	<div id='tail-filter-tab'>
+	<div id='filter-tab'>
 		<p>Show events which match <em>all</em> filters.</p>
 	</div>
-	<div id='tail-highlight-tab'>
+	<div id='highlight-tab'>
 		<p>Highlight events which match <em>all</em> filters.</p>
 	</div>
 </div>
-<input type='checkbox' id='tail-pause' /><label for='tail-pause'>&#10074;&#10074; Pause</label>
-<input type='button' id='tail-clear' value='Clear' />
-<div id='tail-results' class='results'></div>
+<input type='checkbox' id='pause' /><label for='pause'>&#10074;&#10074; Pause</label>
+<input type='button' id='clear' value='Clear' />
+<div id='results' class='results'></div>
 </body>
 </html>

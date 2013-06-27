@@ -57,14 +57,20 @@ if (optimist.argv.help) {
 
 // require lucidtail
 var lucidtail = require('../lib');
-var options = {host: optimist.argv.http_host, of: optimist.argv.of};
+var options = {of: optimist.argv.of};
+
+var server = optimist.argv.http_port;
+if (optimist.argv.http_host) {
+	server = require('http').createServer(lucidtail.client())
+		.listen(server, optimist.argv.http_host);
+}
 
 if (optimist.argv.mongodb) {
 	console.log('Recognized --mongodb:', optimist.argv.mongodb);
 	options.aggregator = lucidtail.emitter('mongodb', optimist.argv.mongodb);
 }
 
-var emitter = lucidtail(optimist.argv.http_port, options);
+var emitter = lucidtail(server, options);
 
 // Use Test listener
 if (optimist.argv.test) {
