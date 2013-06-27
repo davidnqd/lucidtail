@@ -54,7 +54,7 @@ lucidtail *.log
 <p>You must already have <a href="http://nodejs.org/download/">nodejs</a> installed.</p>
 
 <h4>
-<a name="simple" class="anchor" href="#simple"><span class="octicon octicon-link"></span></a>Simple</h4>
+<a name="method-simple" class="anchor" href="#method-simple"><span class="octicon octicon-link"></span></a>Method: Simple</h4>
 
 <p>To install lucidTAIL globally:</p>
 
@@ -65,7 +65,7 @@ lucidtail *.log
 you don't have it you can alternately get lucidTAIL from the <a href="#from-git">git repository</a>.</p>
 
 <h4>
-<a name="from-git" class="anchor" href="#from-git"><span class="octicon octicon-link"></span></a>From GIT</h4>
+<a name="method-from-git" class="anchor" href="#method-from-git"><span class="octicon octicon-link"></span></a>Method: From GIT</h4>
 
 <p>Clone lucidTAIL:</p>
 
@@ -102,12 +102,17 @@ instead of <code>lucidtail</code>.</p>
 </code></pre>
 
 <h4>
-<a name="guess" class="anchor" href="#guess"><span class="octicon octicon-link"></span></a>Guess.</h4>
+<a name="publish-on-port-1337" class="anchor" href="#publish-on-port-1337"><span class="octicon octicon-link"></span></a>Publish on port 1337</h4>
 
-<pre><code>lucidtail *.log -u 514
-</code></pre>
+<ul>
+<li>Monitor all files ending with '.log'.</li>
+<li>Monitor UDP messages on port 514 (syslog). This requires root access on most systems.</li>
+<li>
+<p>Publish on port 1337 (default: 8080)</p>
 
-<h2>
+<p>lucidtail *.log -u 514 -p 1337</p>
+</li>
+</ul><h2>
 <a name="advanced-setups" class="anchor" href="#advanced-setups"><span class="octicon octicon-link"></span></a>Advanced Setups</h2>
 
 <h3>
@@ -180,81 +185,6 @@ var emitter = lucidtail(80)
     // Listen to a test emitter
     .listen(syslog);
 </code></pre>
-
-<h2>
-<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
-
-<p>The API is exposed by <code>require('lucidtail')</code> and is still rapidly evolving, but the gist
-of it is:</p>
-
-<h3>
-<a name="lucidtailserverport8080-options" class="anchor" href="#lucidtailserverport8080-options"><span class="octicon octicon-link"></span></a><code>lucidtail([server|port=8080][, options])</code>
-</h3>
-
-<p>A convenience method which returns an instance of <code>lucidtail.Aggregator</code>. All events
-emitted by the returned <code>lucidtail.Aggregator</code> will be sent through a socket.io socket to 
-users.</p>
-
-<ul>
-<li>'server|port': either a <code>http.Server</code> or a port (default = 8080)</li>
-<li>'options': the options object
-
-<ul>
-<li>'host': http host to listen to (default = <code>INADDR_ANY</code>)</li>
-<li>'of': socket.io namespace to use</li>
-</ul>
-</li>
-</ul><h3>
-<a name="lucidtailaggregator" class="anchor" href="#lucidtailaggregator"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator</code>
-</h3>
-
-<p>A sub class of <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter"><code>events.EventEmitter</code></a>.</p>
-
-<h4>
-<a name="lucidtailaggregatorpipedestination-events" class="anchor" href="#lucidtailaggregatorpipedestination-events"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator.pipe(destination[, events])</code>
-</h4>
-
-<p>Forward events to a destination <code>events.EventEmitter</code>.</p>
-
-<ul>
-<li>
-<code>destination</code>: Destination <code>events.EventEmitter</code>
-</li>
-<li>
-<code>events</code>: An array of events to forward (default: ['data', 'error']) or an object whose
-key/value pairs are used to map source events (keys) to destination events (value).</li>
-</ul><h4>
-<a name="lucidtailaggregatorlistensource-events" class="anchor" href="#lucidtailaggregatorlistensource-events"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator.listen(source[, events])</code>
-</h4>
-
-<p>The opposite of <code>lucidtail.Aggregator.pipe(destination[, events])</code>.</p>
-
-<h3>
-<a name="lucidtailemittername-arg1-arg2" class="anchor" href="#lucidtailemittername-arg1-arg2"><span class="octicon octicon-link"></span></a><code>lucidtail.emitter(name[, arg1, arg2])</code>
-</h3>
-
-<p>A connivence method which creates <code>events.EventEmitter</code>s.</p>
-
-<ul>
-<li>
-<code>name</code> object
-
-<ul>
-<li>
-<code>tail</code>: <code>tail</code> a file specified by arg1 (default: 'test')</li>
-<li>
-<code>test</code>: Emit a test message every second</li>
-<li>
-<code>udp</code>: Emit inbound UDP messages on a port specified by arg1</li>
-<li>
-<code>socketio</code>: Pipes emitted events to a socket.io socket servicing <code>http.Server</code> arg1.</li>
-</ul>
-</li>
-</ul><h3>
-<a name="lucidtailclient" class="anchor" href="#lucidtailclient"><span class="octicon octicon-link"></span></a><code>lucidtail.client()</code>
-</h3>
-
-<p>Creates a <code>http.Server</code> request handler which serves client-side resources.</p>
       </section>
     </div>
 
