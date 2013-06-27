@@ -49,25 +49,24 @@ Please see `lucidtail --help`
 
 #### Monitor Files
 
-Monitor all files ending with '.log'.
-
 	lucidtail *.log
+
+ * Monitor all files ending with '.log'.
 
 #### Monitor UDP
 
-Monitor UDP messages on port 514 (syslog). This requires root access on most systems.
-
 	lucidtail -u 514
 
+ * Monitor UDP messages on port 514 (syslog).
+ * This requires root access on most systems.
+
 #### Publish on port 1337
+
+	lucidtail *.log -u 514 -p 1337
 
  * Monitor all files ending with '.log'.
  * Monitor UDP messages on port 514 (syslog). This requires root access on most systems.
  * Publish on port 1337 (default: 8080)
-
-
-	lucidtail *.log -u 514 -p 1337
-
 
 Advanced Setups
 ---------------
