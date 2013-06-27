@@ -65,6 +65,7 @@ Monitor UDP messages on port 514 (syslog). This requires root access on most sys
  * Monitor UDP messages on port 514 (syslog). This requires root access on most systems.
  * Publish on port 1337 (default: 8080)
 
+
 	lucidtail *.log -u 514 -p 1337
 
 
