@@ -164,10 +164,10 @@ The opposite of `lucidtail.Aggregator.pipe(destination[, events])`.
 
 ### `lucidtail.emitter(name[, arg1, arg2])`
 
-A connivence method which creates `events.EventEmitter`s which emit.
+A connivence method which creates `events.EventEmitter`s.
 
  * `name` object
-	* `tail': `tail` a file specified by arg1 (default: 'test')
+	* `tail`: `tail` a file specified by arg1 (default: 'test')
 	* `test`: Emit a test message every second
 	* `udp`: Emit inbound UDP messages on a port specified by arg1
 	* `socketio`: Pipes emitted events to a socket.io socket servicing `http.Server` arg1.
