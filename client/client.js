@@ -110,7 +110,7 @@ Client.prototype = {
 
 		field.change(this.refresh.bind(this));
 
-		element.append( $('<label />', {label: field.attr('id'), text: 'Message'}).add(field) );
+		element.append( $('<label />', {label: field.attr('id'), text: 'Message'}).add($('<span/>').append(field)) );
 
 		return this;
 	},
@@ -164,7 +164,7 @@ Client.prototype = {
 		});
 
 		element.change(self.refresh.bind(self));
-		return $('<label />', {label: element.attr('id'), text: key}).add(element);
+		return $('<label />', {label: element.attr('id'), text: key}).add($('<span/>').append(element));
 	}
 };
 
