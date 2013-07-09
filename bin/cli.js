@@ -67,7 +67,7 @@ if (optimist.argv.http_host) {
 
 if (optimist.argv.mongodb) {
 	console.log('Recognized --mongodb:', optimist.argv.mongodb);
-	options.aggregator = lucidtail.emitter('mongodb', optimist.argv.mongodb);
+	options.emitter = lucidtail.emitter('mongodb', optimist.argv.mongodb);
 }
 
 var emitter = lucidtail(server, options);

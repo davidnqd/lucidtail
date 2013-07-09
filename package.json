@@ -1,7 +1,7 @@
 {
   "name": "lucidtail",
   "description": "A real-time zero-configuration web-based tail",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "repository": "git://github.com/davidnqd/lucidtail.git",
   "keywords": [
     "realtime",
@@ -25,7 +25,8 @@
     "send": "0.1.1",
     "socket.io": "0.9.14",
     "lazy": "1.0.11",
-    "optimist": "0.5.2"
+    "optimist": "0.5.2",
+    "q": "0.9.6"
   },
   "bin" : "./bin/cli.js"
 }

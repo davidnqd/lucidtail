@@ -23,16 +23,28 @@
 // TODO: Rework 'refresh'. Make it work, make it right, make it fast.
 function Client(resultsPane) {
 	this.resultsPane = $(resultsPane);
+	this.moreButton = $();
 	this.tabs = [];
 	this.callbacks = [];
 	this.attributesCache = {};
 }
+Client.RESPONSE_KEY = '_response'
 Client.RECIEVED_KEY = '_received'
 Client.prototype = {
 	listen: function (emitter) {
 		var self = this;
 
-		emitter.on('data', function (event) {
+		emitter.on('ready', function () {
+			self.moreButton
+				.show()
+				.one('click', function() {
+					self.moreButton.hide();
+					emitter.emit('request', {});
+				});
+		});
+
+		emitter.on('data', function (event, meta) {
+			meta = meta || {};
 			var definition = $('<dl />');
 			var node = $('<details />')
 						.append($('<summary />', {text: event.data}), definition);
@@ -67,15 +79,15 @@ Client.prototype = {
 				}
 			});
 
-			self.resultsPane.prepend(node);
+			if (meta.response) {
+				node.attr('data-' + Client.RESPONSE_KEY, meta.response);
+				self.resultsPane.append(node);
+			} else {
+				self.resultsPane.prepend(node);
+			}
 			node.trigger('refresh');
 			return node;
 		});
-		return this;
-	},
-
-	asClear: function (element) {
-		element.button().click(this.resultsPane.empty.bind(this.resultsPane));
 		return this;
 	},
 
@@ -112,6 +124,11 @@ Client.prototype = {
 
 		element.append( $('<label />', {label: field.attr('id'), text: 'Message'}).add($('<span/>').append(field)) );
 
+		return this;
+	},
+
+	asMore: function (element) {
+		this.moreButton = element.button().hide();
 		return this;
 	},
 
