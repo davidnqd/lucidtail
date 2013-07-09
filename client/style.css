@@ -31,17 +31,10 @@ body {
 }
 
 .results details {
-	border: 0.1em solid #ddd;
 	padding-left: 1em;
 	padding-top: 0.3em;
 	padding-bottom: 0.3em;
-}
-
-.results details:nth-child(odd) {
-	background-color:#eee;
-}
-.results details:nth-child(even) {
-	background-color:#fff;
+	background-color:#f1f1f1;
 }
 
 .results dt {
@@ -49,7 +42,7 @@ body {
 }
 
 .results dl {
-	border-top: 0.1em solid #ddd;
+	background-color:#fff;
 	margin: 0;
 	padding: 0.5em;
 	padding-left: 1.5em;
@@ -61,6 +54,8 @@ body {
 
 .results summary {
 	cursor: pointer;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 }
 
 .ui-tabs-panel span {
