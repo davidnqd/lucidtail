@@ -27,7 +27,8 @@ body {
 	margin-top: 0.5em;
 	overflow: scroll;
 	font-family: "Courier New", monospace;
-	border: 0.1em solid;
+	border: thin solid #AAA;
+	border-radius: 3px;
 }
 
 .results details {
@@ -46,6 +47,7 @@ body {
 	margin: 0;
 	padding: 0.5em;
 	padding-left: 1.5em;
+	border-radius: 5px;
 }
 
 .results dd {
