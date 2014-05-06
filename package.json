@@ -3,6 +3,9 @@
   "description": "A real-time zero-configuration web-based tail",
   "version": "0.0.11",
   "repository": "git://github.com/davidnqd/lucidtail.git",
+  "engines": {
+    "node": "0.10.x"
+  },
   "keywords": [
     "realtime",
     "websocket",

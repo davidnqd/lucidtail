@@ -112,7 +112,7 @@ Client.prototype = {
 		var tab = {element: element, callback: callback};
 		this.tabs.push(tab);
 
-		var field = $('<input />').uniqueId();
+		var field = $('<input />', {name: 'data'}).uniqueId();
 
 		this.callbacks.push(function (node) {
 			var fieldValue = field.val();
@@ -141,7 +141,7 @@ Client.prototype = {
 		var self = this;
 		key = key.toLowerCase();
 
-		var element = $('<input />').uniqueId();
+		var element = $('<input />', {name: key}).uniqueId();
 
 		element.on( 'keydown', function( event ) {
 			if ( event.keyCode === $.ui.keyCode.TAB && $(this).data('ui-autocomplete').menu.active ) {

@@ -37,7 +37,7 @@ Clone lucidTAIL:
 
 	git clone git://github.com/davidnqd/lucidtail.git
 
-You should now be able to use `lucidtail/index.js` or `node lucidtail/index.js`
+You should now be able to use `./index.js` or `node index.js` within the cloned directory
 instead of `lucidtail`.
 
 ### Usage
