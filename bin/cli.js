@@ -32,7 +32,7 @@ var optimist = require('optimist')
 
     .alias('p', 'http_port')
     .describe('p', 'Specify the http port lucidtail services. (0 = random port)')
-    .default('p', 8080)
+    .default('p', process.env.PORT || 8080)
 
     .describe('http_host', 'Specify the http host lucidtail services')
 
@@ -62,7 +62,8 @@ if (optimist.argv.help) {
 var lucidtail = require('../lib');
 var options = {of: optimist.argv.of};
 
-var server = Number(optimist.argv.http_port || process.env.PORT);
+var server = Number(optimist.argv.http_port);
+console.log('Using port:', server);
 if (optimist.argv.http_host) {
 	server = require('http').createServer(lucidtail.client())
 		.listen(server, optimist.argv.http_host);
