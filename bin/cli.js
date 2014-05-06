@@ -42,6 +42,9 @@ var optimist = require('optimist')
     .alias('t', 'test')
     .describe('t', 'Emit a test log message every second with the specified source name')
 
+    .alias('d', 'demo')
+    .describe('d', 'Emit a demo message every half-second with the specified source name')
+
     .alias('m', 'mongodb')
     .describe('m', 'Use the mongodb database specified at the given url')
 
@@ -59,7 +62,7 @@ if (optimist.argv.help) {
 var lucidtail = require('../lib');
 var options = {of: optimist.argv.of};
 
-var server = optimist.argv.http_port;
+var server = Number(optimist.argv.http_port || process.env.PORT);
 if (optimist.argv.http_host) {
 	server = require('http').createServer(lucidtail.client())
 		.listen(server, optimist.argv.http_host);
@@ -71,22 +74,36 @@ if (optimist.argv.mongodb) {
 }
 
 var emitter = lucidtail(server, options);
-
+var emitters = 0;
 // Use Test listener
 if (optimist.argv.test) {
 	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
 	console.log('Recognized --test:', arg);
 	emitter.use('test', arg);
+	emitters++;
 }
 
 // Use UDP4 listener
 if (optimist.argv.udp4) {
 	console.log('Recognized --udp4:', optimist.argv.udp4);
 	emitter.use('udp4', optimist.argv.udp4);
+	emitters++;
 }
 
 // Use file listeners
 for (var i = 0; i < optimist.argv._.length; i++) {
 	console.log('Recognized --file:', optimist.argv._[i]);
 	emitter.use('tail', optimist.argv._[i]);
+	emitters++;
+}
+
+if (emitters == 0 || optimist.argv.demo) {
+	if (optimist.argv.demo) {
+		var arg = optimist.argv.demo === true? 'Test' : optimist.argv.demo;
+		console.log('Recognized --demo:', arg);
+	} else {
+		console.log('No emitter configured, using \'demo\'.');
+	}
+	var arg = optimist.argv.test === true? 'Demo' : optimist.argv.test;
+	emitter.use('demo', arg);
 }

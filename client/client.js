@@ -50,12 +50,13 @@ Client.prototype = {
 						.append($('<summary />', {text: event.data}), definition);
 			delete event.data;
 
+			node.data(Client.RECIEVED_KEY, +new Date);
+
 			var value;
 			for (var key in event) {
 				key = key.toLowerCase();
 				definition.append( $('<dt />', {text: key}) )
 							.append( $('<dd />', {text: JSON.stringify(event[key], undefined, 2) }) );
-				node.data(Client.RECIEVED_KEY, +new Date);
 				if (typeof event[key] == 'string' && key[0] != '_') {
 					value = event[key].toLowerCase();
 					node.data(key, value);
