@@ -1,33 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
     <title>lucidtail by davidnqd</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
-
-    <header>
-      <div class="container">
+    <div class="wrapper">
+      <header>
         <h1>lucidtail</h1>
-        <h2>A real-time zero-configuration web-based tail</h2>
+        <p>A real-time zero-configuration web-based tail</p>
 
-        <section id="downloads">
-          <a href="https://github.com/davidnqd/lucidtail/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/davidnqd/lucidtail/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/davidnqd/lucidtail" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
+        <p class="view"><a href="https://github.com/davidnqd/lucidtail">View the Project on GitHub <small>davidnqd/lucidtail</small></a></p>
 
-    <div class="container">
-      <section id="main_content">
+
+        <ul>
+          <li><a href="https://github.com/davidnqd/lucidtail/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/davidnqd/lucidtail/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/davidnqd/lucidtail">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
         <h1>
 <a name="lucidtail" class="anchor" href="#lucidtail"><span class="octicon octicon-link"></span></a>lucidTAIL</h1>
 
@@ -40,10 +40,9 @@ to your browser.</p>
 <a name="lucidtail-command" class="anchor" href="#lucidtail-command"><span class="octicon octicon-link"></span></a><code>lucidtail</code> Command</h2>
 
 <p>The <code>lucidtail</code> command listens to specified sources and displays them in a pretty little
-web application.</p>
+web application (see <a href="http://lucidtail.herokuapp.com/">Demo</a>).</p>
 
-<p>To quickly be able to view your logs at <a href="http://localhost:8080">http://localhost:8080</a>
-(default):</p>
+<p>To quickly be able to view your logs at http://localhost:8080 (default):</p>
 
 <pre><code>npm install lucidtail -g # One time global install
 lucidtail *.log
@@ -73,7 +72,7 @@ you don't have it you can alternately get lucidTAIL from the <a href="#from-git"
 <pre><code>git clone git://github.com/davidnqd/lucidtail.git
 </code></pre>
 
-<p>You should now be able to use <code>lucidtail/index.js</code> or <code>node lucidtail/index.js</code>
+<p>You should now be able to use <code>./index.js</code> or <code>node index.js</code> within the cloned directory
 instead of <code>lucidtail</code>.</p>
 
 <h3>
@@ -193,9 +192,88 @@ var emitter = lucidtail(80)
     // Listen to a test emitter
     .listen(syslog);
 </code></pre>
-      </section>
-    </div>
 
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<p>The API is exposed by <code>require('lucidtail')</code> and is still rapidly evolving, but the gist
+of it is:</p>
+
+<h3>
+<a name="lucidtailserverport8080-options" class="anchor" href="#lucidtailserverport8080-options"><span class="octicon octicon-link"></span></a><code>lucidtail([server|port=8080][, options])</code>
+</h3>
+
+<p>A convenience method which returns an instance of <code>lucidtail.Aggregator</code>. All events
+emitted by the returned <code>lucidtail.Aggregator</code> will be sent through a socket.io socket to 
+users.</p>
+
+<ul>
+<li>'server|port': either a <code>http.Server</code> or a port (default = 8080)</li>
+<li>'options': the options object
+
+<ul>
+<li>'host': http host to listen to (default = <code>INADDR_ANY</code>)</li>
+<li>'of': socket.io namespace to use</li>
+</ul>
+</li>
+</ul><h3>
+<a name="lucidtailaggregator" class="anchor" href="#lucidtailaggregator"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator</code>
+</h3>
+
+<p>A sub class of <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter"><code>events.EventEmitter</code></a>.</p>
+
+<h4>
+<a name="lucidtailaggregatorpipedestination-events" class="anchor" href="#lucidtailaggregatorpipedestination-events"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator.pipe(destination[, events])</code>
+</h4>
+
+<p>Forward events to a destination <code>events.EventEmitter</code>.</p>
+
+<ul>
+<li>
+<code>destination</code>: Destination <code>events.EventEmitter</code>
+</li>
+<li>
+<code>events</code>: An array of events to forward (default: ['data', 'error']) or an object whose
+key/value pairs are used to map source events (keys) to destination events (value).</li>
+</ul><h4>
+<a name="lucidtailaggregatorlistensource-events" class="anchor" href="#lucidtailaggregatorlistensource-events"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator.listen(source[, events])</code>
+</h4>
+
+<p>The opposite of <code>lucidtail.Aggregator.pipe(destination[, events])</code>.</p>
+
+<h3>
+<a name="lucidtailemittername-arg1-arg2" class="anchor" href="#lucidtailemittername-arg1-arg2"><span class="octicon octicon-link"></span></a><code>lucidtail.emitter(name[, arg1, arg2])</code>
+</h3>
+
+<p>A connivence method which creates <code>events.EventEmitter</code>s.</p>
+
+<ul>
+<li>
+<code>name</code> object
+
+<ul>
+<li>
+<code>tail</code>: <code>tail</code> a file specified by arg1 (default: 'test')</li>
+<li>
+<code>test</code>: Emit a test message every second</li>
+<li>
+<code>udp</code>: Emit inbound UDP messages on a port specified by arg1</li>
+<li>
+<code>socketio</code>: Pipes emitted events to a socket.io socket servicing <code>http.Server</code> arg1.</li>
+</ul>
+</li>
+</ul><h3>
+<a name="lucidtailclient" class="anchor" href="#lucidtailclient"><span class="octicon octicon-link"></span></a><code>lucidtail.client()</code>
+</h3>
+
+<p>Creates a <code>http.Server</code> request handler which serves client-side resources.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/davidnqd">davidnqd</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
     
   </body>
 </html>
