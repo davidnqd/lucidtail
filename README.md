@@ -6,11 +6,18 @@ new lines added to any monitored files, new UDP messages, and those emitted by o
 [EventEmitters](http://nodejs.org/api/events.html#events_class_events_eventemitter)
 to your browser.
 
+Links
+-------------------
+
+* [Home](http://nqd.me/lucidtail/)
+* [GitHub](https://github.com/davidnqd/lucidtail/)
+* [Demo](http://lucidtail.herokuapp.com/)
+
 `lucidtail` Command
 -------------------
 
 The `lucidtail` command listens to specified sources and displays them in a pretty little
-web application. See [demo](http://lucidtail.herokuapp.com/).
+web application.
 
 To quickly be able to view your logs at http://localhost:8080 (default):
 
