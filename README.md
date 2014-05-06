@@ -10,10 +10,9 @@ to your browser.
 -------------------
 
 The `lucidtail` command listens to specified sources and displays them in a pretty little
-web application.
+web application. See [demo](http://lucidtail.herokuapp.com/).
 
-To quickly be able to view your logs at [http://localhost:8080](http://localhost:8080)
-(default):
+To quickly be able to view your logs at http://localhost:8080 (default):
 
 	npm install lucidtail -g # One time global install
 	lucidtail *.log
