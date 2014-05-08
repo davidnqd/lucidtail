@@ -1,14 +1,10 @@
-lucidTAIL
-=========
-
 A real-time zero-configuration web-based tail. It broadcasts events such as
 new lines added to any monitored files, new UDP messages, and those emitted by other
 [EventEmitters](http://nodejs.org/api/events.html#events_class_events_eventemitter)
 to your browser.
 
-
 `lucidtail` Command
--------------------
+===================
 
 The `lucidtail` command listens to specified sources and displays them in a pretty little
 web application (see [demo](http://lucidtail.herokuapp.com/)).
@@ -17,11 +13,12 @@ To quickly be able to view your logs at http://localhost:8080:
 
 	lucidtail *.log
 
-### Installation
+Installation
+------------
 
 After having [nodejs](http://nodejs.org/download/) installed:
 
-#### Method: Simple
+### Method: Simple
 
 To install lucidtail globally:
 
@@ -30,7 +27,7 @@ To install lucidtail globally:
 This allows you to use the `lucidtail` command. You may need root/Administrator access, if
 you don't have it you can alternately get lucidtail from the [git repository](#from-git).
 
-#### Method: From GIT
+### Method: From GIT
 
 Clone lucidtail:
 
@@ -45,7 +42,7 @@ instead of `lucidtail`.
 
 For more information: `lucidtail --help`
 
-#### Monitor
+### Monitor
 
 Monitor all files ending with '.log':
 
@@ -55,14 +52,14 @@ Monitor UDP messages on syslog port 514 (which requires root access on most syst
 
 	lucidtail -u 514
 
-#### Publish
+### Publish
 
 On port 8081:
 
 	lucidtail *.log -u 514 -p 8081
 
-lucidtail as a package
-----------------------
+lucidtail npm package
+=====================
 
 Install lucidtail as a dependency in your [package.json]():
 
@@ -81,14 +78,15 @@ Monitors UDP messages on port 5000:
 	require('lucidtail')()
 		.use('udp4', 5000);
 
-### syslog
+syslog
+------
 
 The following will display inbound syslog messages (UDP port 514) on HTTP port 80:
 
 **Notes**:
 
- * This example requires [lazy](https://npmjs.org/package/lazy) which is on npm.
- * Port 80 and 514 may require root/Administrator privileges to bind.
+ * This example uses [lazy](https://npmjs.org/package/lazy) which is on npm.
+ * Port 80 and 514 may require root/Administrator privileges to bind to.
 
 **Example**:
 
@@ -122,12 +120,12 @@ The following will display inbound syslog messages (UDP port 514) on HTTP port 8
 		.listen(syslog);
 
 API
----
+===
 
 The API is exposed by `require('lucidtail')` and is still rapidly evolving, but the gist
 of it is:
 
-### `lucidtail([server|port=8080][, options])`
+## `lucidtail([server|port=8080][, options])`
 
 A convenience method which returns an instance of `lucidtail.Aggregator`. All events
 emitted by the returned `lucidtail.Aggregator` will be sent through a socket.io socket to 
@@ -138,11 +136,11 @@ users.
 	* 'host': http host to listen to (default = `INADDR_ANY`)
 	* 'of': socket.io namespace to use
 
-### `lucidtail.Aggregator`
+## `lucidtail.Aggregator`
 
 A sub class of [`events.EventEmitter`](http://nodejs.org/api/events.html#events_class_events_eventemitter).
 
-#### `lucidtail.Aggregator.pipe(destination[, events])`
+### `lucidtail.Aggregator.pipe(destination[, events])`
 
 Forward events to a destination `events.EventEmitter`.
 
@@ -150,11 +148,11 @@ Forward events to a destination `events.EventEmitter`.
  * `events`: An array of events to forward (default: ['data', 'error']) or an object whose
  key/value pairs are used to map source events (keys) to destination events (value).
 
-#### `lucidtail.Aggregator.listen(source[, events])`
+### `lucidtail.Aggregator.listen(source[, events])`
 
 The opposite of `lucidtail.Aggregator.pipe(destination[, events])`.
 
-### `lucidtail.emitter(name[, arg1, arg2])`
+## `lucidtail.emitter(name[, arg1, arg2])`
 
 A connivence method which creates `events.EventEmitter`s.
 
@@ -164,6 +162,6 @@ A connivence method which creates `events.EventEmitter`s.
 	* `udp`: Emit inbound UDP messages on a port specified by arg1
 	* `socketio`: Pipes emitted events to a socket.io socket servicing `http.Server` arg1.
 
-### `lucidtail.client()`
+## `lucidtail.client()`
 
 Creates a `http.Server` request handler which serves client-side resources.
