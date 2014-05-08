@@ -28,10 +28,7 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h1>
-<a name="lucidtail" class="anchor" href="#lucidtail"><span class="octicon octicon-link"></span></a>lucidTAIL</h1>
-
-<p>A real-time zero-configuration web-based tail. It broadcasts events such as
+          <p>A real-time zero-configuration web-based tail. It broadcasts events such as
 new lines added to any monitored files, new UDP messages, and those emitted by other
 <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitters</a>
 to your browser.</p>
@@ -40,34 +37,33 @@ to your browser.</p>
 <a name="lucidtail-command" class="anchor" href="#lucidtail-command"><span class="octicon octicon-link"></span></a><code>lucidtail</code> Command</h2>
 
 <p>The <code>lucidtail</code> command listens to specified sources and displays them in a pretty little
-web application (<a href="http://lucidtail.herokuapp.com/">demo</a>).</p>
+web application (see <a href="http://lucidtail.herokuapp.com/">demo</a>).</p>
 
-<p>To quickly be able to view your logs at http://localhost:8080 (default):</p>
+<p>To quickly be able to view your logs at http://localhost:8080:</p>
 
-<pre><code>npm install lucidtail -g # One time global install
-lucidtail *.log
+<pre><code>lucidtail *.log
 </code></pre>
 
 <h3>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
 
-<p>You must already have <a href="http://nodejs.org/download/">nodejs</a> installed.</p>
+<p>After having <a href="http://nodejs.org/download/">nodejs</a> installed:</p>
 
 <h4>
 <a name="method-simple" class="anchor" href="#method-simple"><span class="octicon octicon-link"></span></a>Method: Simple</h4>
 
-<p>To install lucidTAIL globally:</p>
+<p>To install lucidtail globally:</p>
 
 <pre><code>npm install lucidtail -g
 </code></pre>
 
 <p>This allows you to use the <code>lucidtail</code> command. You may need root/Administrator access, if
-you don't have it you can alternately get lucidTAIL from the <a href="#from-git">git repository</a>.</p>
+you don't have it you can alternately get lucidtail from the <a href="#from-git">git repository</a>.</p>
 
 <h4>
 <a name="method-from-git" class="anchor" href="#method-from-git"><span class="octicon octicon-link"></span></a>Method: From GIT</h4>
 
-<p>Clone lucidTAIL:</p>
+<p>Clone lucidtail:</p>
 
 <pre><code>git clone git://github.com/davidnqd/lucidtail.git
 </code></pre>
@@ -76,83 +72,58 @@ you don't have it you can alternately get lucidTAIL from the <a href="#from-git"
 instead of <code>lucidtail</code>.</p>
 
 <h3>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
-
-<p>Please see <code>lucidtail --help</code></p>
-
-<h3>
 <a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
 
 <p><code>lucidtail</code> will use it's default http port (8080) when running.</p>
 
+<p>For more information: <code>lucidtail --help</code></p>
+
 <h4>
-<a name="monitor-files" class="anchor" href="#monitor-files"><span class="octicon octicon-link"></span></a>Monitor Files</h4>
+<a name="monitor" class="anchor" href="#monitor"><span class="octicon octicon-link"></span></a>Monitor</h4>
+
+<p>Monitor all files ending with '.log':</p>
 
 <pre><code>lucidtail *.log
 </code></pre>
 
-<p>Monitors all files ending with '.log'.</p>
-
-<h4>
-<a name="monitor-udp" class="anchor" href="#monitor-udp"><span class="octicon octicon-link"></span></a>Monitor UDP</h4>
+<p>Monitor UDP messages on syslog port 514 (which requires root access on most systems):</p>
 
 <pre><code>lucidtail -u 514
 </code></pre>
 
-<p>Monitors UDP messages on syslog port 514 (which requires root access on most systems).</p>
-
 <h4>
-<a name="publish-on-port-80" class="anchor" href="#publish-on-port-80"><span class="octicon octicon-link"></span></a>Publish on port 80</h4>
+<a name="publish" class="anchor" href="#publish"><span class="octicon octicon-link"></span></a>Publish</h4>
 
-<pre><code>sudo lucidtail *.log -u 514 -p 80
+<p>On port 8081:</p>
+
+<pre><code>lucidtail *.log -u 514 -p 8081
 </code></pre>
 
-<ul>
-<li>Monitor all files ending with '.log'.</li>
-<li>Monitor UDP messages on port 514 (syslog).
+<h2>
+<a name="lucidtail-as-a-package" class="anchor" href="#lucidtail-as-a-package"><span class="octicon octicon-link"></span></a>lucidtail as a package</h2>
 
-<ul>
-<li>This requires root access on most systems.</li>
-</ul>
-</li>
-<li>Publish on port 80
+<p>Install lucidtail as a dependency in your <a href="">package.json</a>:</p>
 
-<ul>
-<li>This requires root access on most systems.</li>
-</ul>
-</li>
-</ul><h2>
-<a name="advanced-setups" class="anchor" href="#advanced-setups"><span class="octicon octicon-link"></span></a>Advanced Setups</h2>
-
-<h3>
-<a name="examples-1" class="anchor" href="#examples-1"><span class="octicon octicon-link"></span></a>Examples</h3>
-
-<p>The examples assume you have either added lucidtail to your <code>package.json</code> or executed:</p>
-
-<pre><code>npm install lucidtail
+<pre><code>cd example
+npm init
+npm install lucidtail --save
 </code></pre>
 
-<h4>
-<a name="test" class="anchor" href="#test"><span class="octicon octicon-link"></span></a>Test</h4>
+<p>Monitor a test emitter (which sends a test message every second) and publish events
+on the default port (port 8080):</p>
 
 <pre><code>require('lucidtail')()
     .use('test');
 </code></pre>
 
-<p>Monitors a test emitter (which sends a test message every second) and publish events
-on the default port (port 8080):</p>
-
-<h4>
-<a name="raw-udp" class="anchor" href="#raw-udp"><span class="octicon octicon-link"></span></a>Raw UDP</h4>
+<p>Monitors UDP messages on port 5000:</p>
 
 <pre><code>require('lucidtail')()
     .use('udp4', 5000);
 </code></pre>
 
-<p>Monitors UDP messages on port 5000.</p>
-
-<h4>
-<a name="syslog" class="anchor" href="#syslog"><span class="octicon octicon-link"></span></a>syslog</h4>
+<h3>
+<a name="syslog" class="anchor" href="#syslog"><span class="octicon octicon-link"></span></a>syslog</h3>
 
 <p>The following will display inbound syslog messages (UDP port 514) on HTTP port 80:</p>
 
