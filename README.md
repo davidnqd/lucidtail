@@ -23,16 +23,16 @@ After having [nodejs](http://nodejs.org/download/) installed:
 
 #### Method: Simple
 
-To install lucidTAIL globally:
+To install lucidtail globally:
 
 	npm install lucidtail -g
 
 This allows you to use the `lucidtail` command. You may need root/Administrator access, if
-you don't have it you can alternately get lucidTAIL from the [git repository](#from-git).
+you don't have it you can alternately get lucidtail from the [git repository](#from-git).
 
 #### Method: From GIT
 
-Clone lucidTAIL:
+Clone lucidtail:
 
 	git clone git://github.com/davidnqd/lucidtail.git
 
