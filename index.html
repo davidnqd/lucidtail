@@ -33,8 +33,8 @@ new lines added to any monitored files, new UDP messages, and those emitted by o
 <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitters</a>
 to your browser.</p>
 
-<h2>
-<a name="lucidtail-command" class="anchor" href="#lucidtail-command"><span class="octicon octicon-link"></span></a><code>lucidtail</code> Command</h2>
+<h1>
+<a name="lucidtail-command" class="anchor" href="#lucidtail-command"><span class="octicon octicon-link"></span></a><code>lucidtail</code> Command</h1>
 
 <p>The <code>lucidtail</code> command listens to specified sources and displays them in a pretty little
 web application (see <a href="http://lucidtail.herokuapp.com/">demo</a>).</p>
@@ -44,13 +44,13 @@ web application (see <a href="http://lucidtail.herokuapp.com/">demo</a>).</p>
 <pre><code>lucidtail *.log
 </code></pre>
 
-<h3>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>After having <a href="http://nodejs.org/download/">nodejs</a> installed:</p>
 
-<h4>
-<a name="method-simple" class="anchor" href="#method-simple"><span class="octicon octicon-link"></span></a>Method: Simple</h4>
+<h3>
+<a name="method-simple" class="anchor" href="#method-simple"><span class="octicon octicon-link"></span></a>Method: Simple</h3>
 
 <p>To install lucidtail globally:</p>
 
@@ -60,8 +60,8 @@ web application (see <a href="http://lucidtail.herokuapp.com/">demo</a>).</p>
 <p>This allows you to use the <code>lucidtail</code> command. You may need root/Administrator access, if
 you don't have it you can alternately get lucidtail from the <a href="#from-git">git repository</a>.</p>
 
-<h4>
-<a name="method-from-git" class="anchor" href="#method-from-git"><span class="octicon octicon-link"></span></a>Method: From GIT</h4>
+<h3>
+<a name="method-from-git" class="anchor" href="#method-from-git"><span class="octicon octicon-link"></span></a>Method: From GIT</h3>
 
 <p>Clone lucidtail:</p>
 
@@ -78,8 +78,8 @@ instead of <code>lucidtail</code>.</p>
 
 <p>For more information: <code>lucidtail --help</code></p>
 
-<h4>
-<a name="monitor" class="anchor" href="#monitor"><span class="octicon octicon-link"></span></a>Monitor</h4>
+<h3>
+<a name="monitor" class="anchor" href="#monitor"><span class="octicon octicon-link"></span></a>Monitor</h3>
 
 <p>Monitor all files ending with '.log':</p>
 
@@ -91,16 +91,16 @@ instead of <code>lucidtail</code>.</p>
 <pre><code>lucidtail -u 514
 </code></pre>
 
-<h4>
-<a name="publish" class="anchor" href="#publish"><span class="octicon octicon-link"></span></a>Publish</h4>
+<h3>
+<a name="publish" class="anchor" href="#publish"><span class="octicon octicon-link"></span></a>Publish</h3>
 
 <p>On port 8081:</p>
 
 <pre><code>lucidtail *.log -u 514 -p 8081
 </code></pre>
 
-<h2>
-<a name="lucidtail-as-a-package" class="anchor" href="#lucidtail-as-a-package"><span class="octicon octicon-link"></span></a>lucidtail as a package</h2>
+<h1>
+<a name="lucidtail-npm-package" class="anchor" href="#lucidtail-npm-package"><span class="octicon octicon-link"></span></a>lucidtail npm package</h1>
 
 <p>Install lucidtail as a dependency in your <a href="">package.json</a>:</p>
 
@@ -122,16 +122,16 @@ on the default port (port 8080):</p>
     .use('udp4', 5000);
 </code></pre>
 
-<h3>
-<a name="syslog" class="anchor" href="#syslog"><span class="octicon octicon-link"></span></a>syslog</h3>
+<h2>
+<a name="syslog" class="anchor" href="#syslog"><span class="octicon octicon-link"></span></a>syslog</h2>
 
 <p>The following will display inbound syslog messages (UDP port 514) on HTTP port 80:</p>
 
 <p><strong>Notes</strong>:</p>
 
 <ul>
-<li>This example requires <a href="https://npmjs.org/package/lazy">lazy</a> which is on npm.</li>
-<li>Port 80 and 514 may require root/Administrator privileges to bind.</li>
+<li>This example uses <a href="https://npmjs.org/package/lazy">lazy</a> which is on npm.</li>
+<li>Port 80 and 514 may require root/Administrator privileges to bind to.</li>
 </ul><p><strong>Example</strong>:</p>
 
 <pre><code>var lucidtail = require('lucidtail'),
@@ -164,15 +164,15 @@ var emitter = lucidtail(80)
     .listen(syslog);
 </code></pre>
 
-<h2>
-<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+<h1>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h1>
 
 <p>The API is exposed by <code>require('lucidtail')</code> and is still rapidly evolving, but the gist
 of it is:</p>
 
-<h3>
+<h2>
 <a name="lucidtailserverport8080-options" class="anchor" href="#lucidtailserverport8080-options"><span class="octicon octicon-link"></span></a><code>lucidtail([server|port=8080][, options])</code>
-</h3>
+</h2>
 
 <p>A convenience method which returns an instance of <code>lucidtail.Aggregator</code>. All events
 emitted by the returned <code>lucidtail.Aggregator</code> will be sent through a socket.io socket to 
@@ -187,15 +187,15 @@ users.</p>
 <li>'of': socket.io namespace to use</li>
 </ul>
 </li>
-</ul><h3>
+</ul><h2>
 <a name="lucidtailaggregator" class="anchor" href="#lucidtailaggregator"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator</code>
-</h3>
+</h2>
 
 <p>A sub class of <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter"><code>events.EventEmitter</code></a>.</p>
 
-<h4>
+<h3>
 <a name="lucidtailaggregatorpipedestination-events" class="anchor" href="#lucidtailaggregatorpipedestination-events"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator.pipe(destination[, events])</code>
-</h4>
+</h3>
 
 <p>Forward events to a destination <code>events.EventEmitter</code>.</p>
 
@@ -206,15 +206,15 @@ users.</p>
 <li>
 <code>events</code>: An array of events to forward (default: ['data', 'error']) or an object whose
 key/value pairs are used to map source events (keys) to destination events (value).</li>
-</ul><h4>
+</ul><h3>
 <a name="lucidtailaggregatorlistensource-events" class="anchor" href="#lucidtailaggregatorlistensource-events"><span class="octicon octicon-link"></span></a><code>lucidtail.Aggregator.listen(source[, events])</code>
-</h4>
+</h3>
 
 <p>The opposite of <code>lucidtail.Aggregator.pipe(destination[, events])</code>.</p>
 
-<h3>
+<h2>
 <a name="lucidtailemittername-arg1-arg2" class="anchor" href="#lucidtailemittername-arg1-arg2"><span class="octicon octicon-link"></span></a><code>lucidtail.emitter(name[, arg1, arg2])</code>
-</h3>
+</h2>
 
 <p>A connivence method which creates <code>events.EventEmitter</code>s.</p>
 
@@ -233,9 +233,9 @@ key/value pairs are used to map source events (keys) to destination events (valu
 <code>socketio</code>: Pipes emitted events to a socket.io socket servicing <code>http.Server</code> arg1.</li>
 </ul>
 </li>
-</ul><h3>
+</ul><h2>
 <a name="lucidtailclient" class="anchor" href="#lucidtailclient"><span class="octicon octicon-link"></span></a><code>lucidtail.client()</code>
-</h3>
+</h2>
 
 <p>Creates a <code>http.Server</code> request handler which serves client-side resources.</p>
         </section>
