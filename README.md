@@ -3,7 +3,7 @@ new lines added to any monitored files, new UDP messages, and those emitted by o
 [EventEmitters](http://nodejs.org/api/events.html#events_class_events_eventemitter)
 to your browser.
 
-`lucidtail` Command
+The lucidtail Command
 ===================
 
 The `lucidtail` command listens to specified sources and displays them in a pretty little
