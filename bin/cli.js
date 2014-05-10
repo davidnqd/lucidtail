@@ -106,5 +106,5 @@ if (emitters === 0 || optimist.argv.demo) {
 		console.log('No emitter configured, using \'demo\'.');
 	}
 	var arg = optimist.argv.test === true? 'Demo' : optimist.argv.test;
-	emitter.listen(require('../lib/in/demo')(arg));
+	emitter.listen(require('../lib/in/demo')());
 }

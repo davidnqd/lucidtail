@@ -60,8 +60,8 @@ Client.prototype = {
 		emitter.on('data', function (event, meta) {
 			meta = meta || {};
 			var definition = $('<dl />');
-			var node = self.createDetails()
-						.append(self.createSummary(), definition);
+			var node = self.createDetails(event, meta)
+						.append(self.createSummary(event, meta), definition);
 			delete event.data;
 
 			node.data(Client.RECIEVED_KEY, +new Date());
