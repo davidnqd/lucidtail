@@ -34,9 +34,15 @@ Client.prototype = {
 	addToAutoComplete: function (tab) {
 		var self = this;
 
-		tab.element.append(
-			self.createAutocomplete(key, tab.callback)
-		);
+		tab.element.append(self.createAutocomplete(key, tab.callback));
+	},
+
+	createDetails: function(event, meta) {
+		return $('<details />');
+	},
+
+	createSummary: function(event, meta) {
+		return $('<summary />', {text: event.data});
 	},
 
 	listen: function (emitter) {
@@ -54,8 +60,8 @@ Client.prototype = {
 		emitter.on('data', function (event, meta) {
 			meta = meta || {};
 			var definition = $('<dl />');
-			var node = $('<details />')
-						.append($('<summary />', {text: event.data}), definition);
+			var node = self.createDetails()
+						.append(self.createSummary(), definition);
 			delete event.data;
 
 			node.data(Client.RECIEVED_KEY, +new Date());

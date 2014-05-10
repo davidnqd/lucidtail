@@ -80,21 +80,21 @@ var emitters = 0;
 if (optimist.argv.test) {
 	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
 	console.log('Recognized --test:', arg);
-	emitter.use('test', arg);
+	emitter.listen(require('../lib/in/test')(arg));
 	emitters++;
 }
 
 // Use UDP4 listener
 if (optimist.argv.udp4) {
 	console.log('Recognized --udp4:', optimist.argv.udp4);
-	emitter.use('udp4', optimist.argv.udp4);
+	emitter.listen(require('../lib/in/udp4')(arg));
 	emitters++;
 }
 
 // Use file listeners
 for (var i = 0; i < optimist.argv._.length; i++) {
 	console.log('Recognized --file:', optimist.argv._[i]);
-	emitter.use('tail', optimist.argv._[i]);
+	emitter.listen(require('../lib/in/tail')(arg));
 	emitters++;
 }
 
@@ -106,5 +106,5 @@ if (emitters === 0 || optimist.argv.demo) {
 		console.log('No emitter configured, using \'demo\'.');
 	}
 	var arg = optimist.argv.test === true? 'Demo' : optimist.argv.test;
-	emitter.use('demo', arg);
+	emitter.listen(require('../lib/in/demo')(arg));
 }
