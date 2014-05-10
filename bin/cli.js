@@ -98,7 +98,7 @@ for (var i = 0; i < optimist.argv._.length; i++) {
 	emitters++;
 }
 
-if (emitters == 0 || optimist.argv.demo) {
+if (emitters === 0 || optimist.argv.demo) {
 	if (optimist.argv.demo) {
 		var arg = optimist.argv.demo === true? 'Test' : optimist.argv.demo;
 		console.log('Recognized --demo:', arg);

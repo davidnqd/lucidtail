@@ -28,9 +28,17 @@ function Client(resultsPane) {
 	this.callbacks = [];
 	this.attributesCache = {};
 }
-Client.RESPONSE_KEY = '_response'
-Client.RECIEVED_KEY = '_received'
+Client.RESPONSE_KEY = '_response';
+Client.RECIEVED_KEY = '_received';
 Client.prototype = {
+	addToAutoComplete: function (tab) {
+		var self = this;
+
+		tab.element.append(
+			self.createAutocomplete(key, tab.callback)
+		);
+	},
+
 	listen: function (emitter) {
 		var self = this;
 
@@ -50,7 +58,7 @@ Client.prototype = {
 						.append($('<summary />', {text: event.data}), definition);
 			delete event.data;
 
-			node.data(Client.RECIEVED_KEY, +new Date);
+			node.data(Client.RECIEVED_KEY, +new Date());
 
 			var value;
 			for (var key in event) {
@@ -63,11 +71,7 @@ Client.prototype = {
 					if (self.attributesCache[key] === undefined) {
 						self.attributesCache[key] = {};
 
-						self.tabs.forEach(function (tab) {
-							tab.element.append(
-								self.createAutocomplete(key, tab.callback)
-							);
-						});
+						self.tabs.forEach(addToAutoComplete(tab));
 					}
 					self.attributesCache[key][value] = true;
 				}
@@ -97,7 +101,7 @@ Client.prototype = {
 
 		var pauseTime;
 		element.button().change(function(event) {
-			pauseTime = (element.prop('checked'))? new Date: null;
+			pauseTime = (element.prop('checked'))? new Date(): null;
 			self.refresh();
 		});
 		
