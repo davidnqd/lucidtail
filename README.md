@@ -48,9 +48,11 @@ Monitor all files ending with '.log':
 
 	lucidtail *.log
 
-Monitor UDP messages on syslog port 514 (which requires root access on most systems):
+Monitor UDP messages on syslog port 5144:
 
-	lucidtail -u 514
+	lucidtail -u 5144
+	# TIP: If you want to test:
+	nc -w0 -u localhost 5144 <<< "<34>1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM'su root' failed for lonvick on /dev/pts/8"
 
 ### Publish
 

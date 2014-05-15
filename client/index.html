@@ -18,14 +18,14 @@
 
 		You should have received a copy of the GNU Affero General Public License
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
---> 
+-->
 <html lang='en'>
 <head>
 	<meta charset='utf-8' />
 	<title>lucidtail</title>
-	<link rel='stylesheet' href='http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' />
-	<script src='http://code.jquery.com/jquery-2.0.0.js'></script>
-	<script src='http://code.jquery.com/ui/1.10.3/jquery-ui.js'></script>
+	<link rel='stylesheet' href='//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' />
+	<script src='//code.jquery.com/jquery-2.0.0.js'></script>
+	<script src='//code.jquery.com/ui/1.10.3/jquery-ui.js'></script>
 
 	<link rel='stylesheet' href='style.css' />
 	<script src='socket.io/socket.io.js'></script>
@@ -35,7 +35,7 @@
 	// http://www.bloggingdeveloper.com/post/JavaScript-QueryString-ParseGet-QueryString-with-Client-Side-JavaScript.aspx
 	function getQuerystring(key, default_)
 	{
-		if (default_ == null) default_ = ''; 
+		if (default_ == null) default_ = '';
 		key = key.replace(/[\[]/,'\\\[').replace(/[\]]/,'\\\]');
 		var regex = new RegExp('[\\?&]' + key + '=([^&#]*)');
 		var qs = regex.exec(window.location.href);
@@ -50,7 +50,7 @@
 			active: false,
 			collapsible: true
 		});
- 
+
 		new Client($('#results'))
 			.asTab($('#filter-tab'), function(node, matches) {
 				if (!matches) node.hide();

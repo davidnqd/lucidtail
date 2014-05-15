@@ -39,9 +39,6 @@ var optimist = require('optimist')
     .alias('u', 'udp4')
     .describe('u', 'Emit incoming UDP messages on the specified port')
 
-    .alias('t', 'test')
-    .describe('t', 'Emit a test log message every second with the specified source name')
-
     .alias('d', 'demo')
     .describe('d', 'Emit a demo message every half-second with the specified source name')
 
@@ -49,8 +46,7 @@ var optimist = require('optimist')
     .describe('m', 'Use the mongodb database specified at the given url')
 
     .alias('o', 'of')
-    .describe('o', 'Broadcast on a given socket.io namespace.')
-    ;
+    .describe('o', 'Broadcast on a given socket.io namespace.');
 
 // Show usage
 if (optimist.argv.help) {
@@ -75,36 +71,25 @@ if (optimist.argv.mongodb) {
 }
 
 var emitter = lucidtail(server, options);
-var emitters = 0;
-// Use Test listener
-if (optimist.argv.test) {
-	var arg = optimist.argv.test === true? 'Test' : optimist.argv.test;
-	console.log('Recognized --test:', arg);
-	emitter.listen(require('../lib/in/test')(arg));
-	emitters++;
-}
 
 // Use UDP4 listener
 if (optimist.argv.udp4) {
 	console.log('Recognized --udp4:', optimist.argv.udp4);
-	emitter.listen(require('../lib/in/udp4')(arg));
-	emitters++;
+	emitter.listen(require('../lib/in/udp4')(optimist.argv.udp4));
 }
 
 // Use file listeners
 for (var i = 0; i < optimist.argv._.length; i++) {
 	console.log('Recognized --file:', optimist.argv._[i]);
-	emitter.listen(require('../lib/in/tail')(arg));
-	emitters++;
+	emitter.listen(require('../lib/in/tail')(optimist.argv._[i]));
 }
 
-if (emitters === 0 || optimist.argv.demo) {
+console.log('Listeners registered: ' + emitter.emitterCount());
+if (emitter.emitterCount() === 0 || optimist.argv.demo) {
 	if (optimist.argv.demo) {
-		var arg = optimist.argv.demo === true? 'Test' : optimist.argv.demo;
-		console.log('Recognized --demo:', arg);
+		console.log('Recognized --demo');
 	} else {
 		console.log('No emitter configured, using \'demo\'.');
 	}
-	var arg = optimist.argv.test === true? 'Demo' : optimist.argv.test;
 	emitter.listen(require('../lib/in/demo')());
 }
