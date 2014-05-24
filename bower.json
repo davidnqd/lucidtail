@@ -1,0 +1,15 @@
+{
+  "name": "lucidtail",
+  "description": "A real-time zero-configuration web-based tail",
+  "version": "0.0.21",
+  "homepage": "http://nqd.me/lucidtail",
+  "license": "AGPL",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "angular-loader": "1.2.x",
+    "angular-mocks": "~1.2.x",
+    "html5-boilerplate": "~4.3.0"
+  }
+}

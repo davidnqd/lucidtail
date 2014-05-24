@@ -18,9 +18,13 @@
 		You should have received a copy of the GNU Affero General Public License
 		along with this program.	If not, see <http://www.gnu.org/licenses/>.
 */
-// TODO: This class is responsible for a few too many things..
-// There are a few widgets and an event emitter in here.
-// TODO: Rework 'refresh'. Make it work, make it right, make it fast.
+// TODO: Refactor Client into Services, Controllers and Angular Directivues
+'use strict';
+
+angular.module('ltApp', []);
+
+// Legacy code
+
 function Client(resultsPane) {
 	this.resultsPane = $(resultsPane);
 	this.moreButton = $();
@@ -31,7 +35,7 @@ function Client(resultsPane) {
 Client.RESPONSE_KEY = '_response';
 Client.RECIEVED_KEY = '_received';
 Client.prototype = {
-	addToAutoComplete: function (tab) {
+	addToAutoComplete: function (key, tab) {
 		var self = this;
 
 		tab.element.append(self.createAutocomplete(key, tab.callback));
@@ -77,7 +81,7 @@ Client.prototype = {
 					if (self.attributesCache[key] === undefined) {
 						self.attributesCache[key] = {};
 
-						self.tabs.forEach(addToAutoComplete(tab));
+						self.tabs.forEach(self.addToAutoComplete.bind(self, key));
 					}
 					self.attributesCache[key][value] = true;
 				}
@@ -110,7 +114,7 @@ Client.prototype = {
 			pauseTime = (element.prop('checked'))? new Date(): null;
 			self.refresh();
 		});
-		
+
 		self.callbacks.push(function (node) {
 			if (pauseTime && new Date(node.data(Client.RECIEVED_KEY)) >= pauseTime)
 				node.hide();

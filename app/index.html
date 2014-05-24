@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="ltApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="ltApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="ltApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="ltApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>lucidtail</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
+  <link rel="stylesheet" href="css/app.css"/>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="//code.jquery.com/jquery-2.0.0.js"></script>
+	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+	<script src="socket.io/socket.io.js"></script>
+	<script src="js/client.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/directives.js"></script>
+	<script>
+	// getQuerystring from:
+	// http://www.bloggingdeveloper.com/post/JavaScript-QueryString-ParseGet-QueryString-with-Client-Side-JavaScript.aspx
+	function getQuerystring(key, default_)
+	{
+		if (default_ == null) default_ = '';
+		key = key.replace(/[\[]/,'\\\[').replace(/[\]]/,'\\\]');
+		var regex = new RegExp('[\\?&]' + key + '=([^&#]*)');
+		var qs = regex.exec(window.location.href);
+		if(qs == null)
+			return default_;
+		else
+			return qs[1];
+	}
+
+	$(function() {
+		$( '#tabs' ).tabs({
+			active: false,
+			collapsible: true
+		});
+
+		new Client($('#results'))
+			.asTab($('#filter-tab'), function(node, matches) {
+				if (!matches) node.hide();
+			})
+			.asTab($('#highlight-tab'), function(node, matches) {
+				if (matches) node.css('background-color', 'yellow');
+			})
+			.asPause($('#pause'))
+			.asMore($('#more'))
+			.listen(io.connect(getQuerystring('of')))
+			;
+	});
+	</script>
+</head>
+<body>
+  <div id='results' class='results'></div>
+  <div id='results-footer'><input type='button' id='more' value='Show More' /></div>
+  <div id='tabs'>
+  	<ul>
+  		<li><a href='#filter-tab'>Filter</a></li>
+  		<li><a href='#highlight-tab'>Highlight</a></li>
+  		<li id='tab-buttons'>
+  			<input type='checkbox' id='pause' />
+  			<label for='pause'>&#10074;&#10074; Pause</label>
+  		</li>
+  	</ul>
+  	<div id='filter-tab'>
+  		<p>Show events which match <em>all</em> filters.</p>
+  	</div>
+  	<div id='highlight-tab'>
+  		<p>Highlight events which match <em>all</em> filters.</p>
+  	</div>
+  </div>
+</body>
+</html>

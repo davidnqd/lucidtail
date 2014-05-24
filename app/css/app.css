@@ -1,0 +1,97 @@
+/**
+    lucidtail
+    ie. lucidtail *.log
+    Copyright (C) 2013	David Duong
+
+    https://github.com/davidnqd/lucidtail
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.	If not, see <http://www.gnu.org/licenses/>.
+*/
+body {
+  font-size: 0.65em;
+  margin-bottom: 5em;
+}
+
+.results {
+  margin-top: 0.5em;
+  overflow: scroll;
+  font-family: "Courier New", monospace;
+  border: thin solid #AAA;
+  border-radius: 3px;
+}
+
+.results details {
+  padding-left: 1em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  background-color:#f1f1f1;
+}
+
+.results dt {
+  font-weight: bold;
+}
+
+.results dl {
+  background-color:#fff;
+  margin: 0;
+  padding: 0.5em;
+  padding-left: 1.5em;
+  border-radius: 5px;
+}
+
+.results dd {
+  white-space: pre-wrap;
+}
+
+.results summary {
+  cursor: pointer;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.ui-tabs-panel span {
+    display: block;
+    overflow: hidden;
+    padding: 0 4px 0 6px;
+}
+
+.ui-tabs-panel input {
+  width: 100%;
+}
+
+.ui-tabs-panel label {
+  float: left;
+  width: 10em;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+#results-footer {
+  text-align: center;
+}
+
+#more {
+  margin-top: 0.5em;
+  width: 50%;
+}
+
+#tab-buttons {
+  margin-left: 2em;
+}
+#tabs {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
