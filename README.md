@@ -20,7 +20,7 @@ After having [nodejs](http://nodejs.org/download/) installed:
 
 ### Method: Simple
 
-To install lucidtail globally:
+To install lucidtail globally with [npm](https://www.npmjs.org/package/lucidtail):
 
 	npm install lucidtail -g
 
