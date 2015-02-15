@@ -22,8 +22,8 @@
 
 var lucidtail = require('./lib');
 
+// If used as a module, behave like a regular module.
 if (module.parent) {
-	// A module required this module, behave like a regular module.
 	module.exports = lucidtail;
 	return;
 }
@@ -50,6 +50,9 @@ var optimist = require('optimist')
 
 		.alias('d', 'demo')
 		.describe('d', 'Emit a demo message every half-second with the specified source name')
+
+		.alias('s', 'stdin')
+		.describe('s', 'Read from stdin')
 
 		.alias('m', 'mongodb')
 		.describe('m', 'Use the mongodb database specified at the given url')
@@ -84,6 +87,11 @@ var emitter = lucidtail(server, options);
 if (optimist.argv.udp4) {
 	console.log('Recognized --udp4:', optimist.argv.udp4);
 	emitter.listen(require('./lib/in/udp4')(optimist.argv.udp4));
+}
+
+if (optimist.argv.stdin) {
+	console.log('Recognized --stdin');
+	emitter.listen(require('./lib/in/stdin')());
 }
 
 // Use file listeners
