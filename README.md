@@ -1,13 +1,13 @@
-A real-time zero-configuration web-based tail. It broadcasts events such as
-new lines added to any monitored files, new UDP messages, and those emitted by other
+A real-time zero-configuration web-based tail. It broadcasts events such as new
+lines added to any monitored files, new UDP messages, and those emitted by other
 [EventEmitters](http://nodejs.org/api/events.html#events_class_events_eventemitter)
 to your browser.
 
 The lucidtail Command
 ===================
 
-The `lucidtail` command listens to specified sources and displays them in a pretty little
-web application (see [demo](http://lucidtail.herokuapp.com/)).
+The `lucidtail` command listens to specified sources and displays them in a
+pretty little web application (see [demo](http://lucidtail.herokuapp.com/)).
 
 To quickly be able to view your logs at http://localhost:8080:
 
@@ -24,8 +24,9 @@ To install lucidtail globally with [npm](https://www.npmjs.org/package/lucidtail
 
 	npm install lucidtail -g
 
-This allows you to use the `lucidtail` command. You may need root/Administrator access, if
-you don't have it you can alternately get lucidtail from the [git repository](#from-git).
+This allows you to use the `lucidtail` command. You may need root/Administrator
+access, if you don't have it you can alternately get lucidtail from the
+[git repository](#from-git).
 
 ### Method: From GIT
 
@@ -33,8 +34,8 @@ Clone lucidtail:
 
 	git clone git://github.com/davidnqd/lucidtail.git
 
-You should now be able to use `./index.js` or `node index.js` within the cloned directory
-instead of `lucidtail`.
+You should now be able to use `./index.js` or `node index.js` within the cloned
+directory instead of `lucidtail`.
 
 ### Examples
 
@@ -69,8 +70,8 @@ Install lucidtail as a dependency in your [package.json]():
 	npm init
 	npm install lucidtail --save
 
-Monitor a test emitter (which sends a test message every second) and publish events
-on the default port (port 8080):
+Monitor a test emitter (which sends a test message every second) and publish
+events on the default port (port 8080):
 
 	require('lucidtail')()
 		.use('test');
@@ -83,7 +84,7 @@ Monitors UDP messages on port 5000:
 syslog
 ------
 
-The following will display inbound syslog messages (UDP port 514) on HTTP port 80:
+The following will display inbound syslog messages on HTTP port 80:
 
 **Notes**:
 
