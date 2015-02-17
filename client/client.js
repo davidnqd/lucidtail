@@ -76,8 +76,6 @@ Client.prototype = {
 					node.data(key, value);
 					if (self.attributesCache[key] === undefined) {
 						self.attributesCache[key] = {};
-
-						self.tabs.forEach(addToAutoComplete(tab));
 					}
 					self.attributesCache[key][value] = true;
 				}
@@ -110,7 +108,7 @@ Client.prototype = {
 			pauseTime = (element.prop('checked'))? new Date(): null;
 			self.refresh();
 		});
-		
+
 		self.callbacks.push(function (node) {
 			if (pauseTime && new Date(node.data(Client.RECIEVED_KEY)) >= pauseTime)
 				node.hide();
