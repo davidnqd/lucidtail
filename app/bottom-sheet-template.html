@@ -1,0 +1,38 @@
+<md-bottom-sheet class="md-list md-has-header bottomTabs">
+  <md-tabs class="md-accent" md-selected="data.selectedIndex">
+    <md-tab id="filter" aria-controls="filter-content">
+      Filter
+    </md-tab>
+    <md-tab id="highlight" aria-controls="highlight-content">
+      Highlight
+    </md-tab>
+  </md-tabs>
+  <ng-switch on="data.selectedIndex" class="tabpanel-container">
+    <md-content role="tabpanel"
+         id="filter-content"
+         aria-labelledby="filter"
+         ng-switch-when="0"
+         md-swipe-left="next()"
+         md-swipe-right="previous()" >
+       <div>Filter events which match <em>any</em> filters.</div>
+       <md-content md-theme="docs-dark" layout="column" layout-sm="column">
+         <md-input-container>
+           <label>Filter</label>
+           <input ng-model="search.event.$">
+         </md-input-container>
+         <md-input-container>
+           <label>By Message</label>
+           <input ng-model="search.event.data">
+         </md-input-container>
+       </md-content>
+    </md-content>
+    <div role="tabpanel"
+         id="highlight-content"
+         aria-labelledby="highlight"
+         ng-switch-when="1"
+         md-swipe-left="next()"
+         md-swipe-right="previous()" >
+      <div>TODO: Highlight events which match <em>any</em> filters.</div>
+    </div>
+  </ng-switch>
+</md-bottom-sheet>

@@ -1,0 +1,89 @@
+<!doctype html>
+<!--
+		lucidtail
+		ie. lucidtail *.log
+		Copyright (C) 2013	David Duong
+
+		https://github.com/davidnqd/lucidtail
+
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU Affero General Public License as published by
+		the Free Software Foundation, either version 3 of the License, or
+		(at your option) any later version.
+
+		This program is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+		GNU Affero General Public License for more details.
+
+		You should have received a copy of the GNU Affero General Public License
+		along with this program.	If not, see <http://www.gnu.org/licenses/>.
+-->
+<html lang='en'>
+<head>
+	<meta charset='utf-8' />
+	<title>lucidtail</title>
+	<link rel='stylesheet' href='//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' />
+	<script src='//code.jquery.com/jquery-2.0.0.js'></script>
+	<script src='//code.jquery.com/ui/1.10.3/jquery-ui.js'></script>
+
+	<link rel='stylesheet' href='style.css' />
+	<script src='/socket.io/socket.io.js'></script>
+	<script src='client.js'></script>
+	<script>
+	// getQuerystring from:
+	// http://www.bloggingdeveloper.com/post/JavaScript-QueryString-ParseGet-QueryString-with-Client-Side-JavaScript.aspx
+	function getQuerystring(key, default_)
+	{
+		if (default_ == null) default_ = '';
+		key = key.replace(/[\[]/,'\\\[').replace(/[\]]/,'\\\]');
+		var regex = new RegExp('[\\?&]' + key + '=([^&#]*)');
+		var qs = regex.exec(window.location.href);
+		if(qs == null)
+			return default_;
+		else
+			return qs[1];
+	}
+
+	$(function() {
+		$( '#tabs' ).tabs({
+			active: false,
+			collapsible: true
+		});
+
+		new Client($('#results'))
+			.asTab($('#filter-tab'), function(node, matches) {
+				if (!matches) node.hide();
+			})
+			.asTab($('#highlight-tab'), function(node, matches) {
+				if (matches) node.css('background-color', 'yellow');
+			})
+			.asPause($('#pause'))
+			.asMore($('#more'))
+			.listen(io.connect(getQuerystring('of')))
+			;
+	});
+	</script>
+</head>
+<body>
+
+<div id='results' class='results'></div>
+<div id='results-footer'><input type='button' id='more' value='Show More' /></div>
+<div id='tabs'>
+	<ul>
+		<li><a href='#filter-tab'>Filter</a></li>
+		<li><a href='#highlight-tab'>Highlight</a></li>
+		<li id='tab-buttons'>
+			<input type='checkbox' id='pause' />
+			<label for='pause'>&#10074;&#10074; Pause</label>
+		</li>
+	</ul>
+	<div id='filter-tab'>
+		<p>Show events which match <em>all</em> filters.</p>
+	</div>
+	<div id='highlight-tab'>
+		<p>Highlight events which match <em>all</em> filters.</p>
+	</div>
+</div>
+</body>
+</html>

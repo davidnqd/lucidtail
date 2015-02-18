@@ -1,0 +1,41 @@
+section li {
+  display: inline;
+  display: inline-block;
+  background-color: #fff;
+  position: relative;
+  vertical-align: top;
+  cursor: default
+}
+
+.view {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
+  zoom:0.70;
+  transform: translateZ(0);
+  -webkit-transform: scale(0.70);
+  -moz-transform:scale(0.70);
+  background-repeat: no-repeat;
+  background-image: url(spritesheets/sprites.svg);
+}
+
+.tail {
+	background-position: 33.333333333333336% 33.333333333333336%;
+}
+
+.tail-dims {
+	width: 128px;
+	height: 128px;
+}
+
+.grep {
+	background-position: 0 33.333333333333336%;
+}
+
+.grep-dims {
+	width: 128px;
+	height: 128px;
+}

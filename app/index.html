@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <title>lucidTAIL</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="./app.css" >
+  </head>
+
+  <body ng-app="ltApp" layout="column" ng-controller="AppCtrl">
+
+    <md-toolbar layout="row">
+      <button ng-click="toggleSidenav('left')" hide-gt-sm class="menuBtn">
+        <span class="visuallyhidden">Menu</span>
+      </button>
+      <h1>lucidTAIL</h1>
+    </md-toolbar>
+
+    <!--
+         Use `flex` [below] to have the side bar and content area
+         fill the available vertical display area
+     -->
+
+    <div layout="row" flex>
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
+        <md-list>
+          <md-item>
+            <md-item-content>
+              <md-button ng-click="select(views[0])" ng-class="{ 'selected' : views[0] === selected }">
+                <span class="{{views[0].classname}} view"></span>
+                {{views[0].name}}
+              </md-button>
+            </md-item-content>
+          </md-item>
+          <md-item>
+            <md-item-content>
+              <md-button ng-click="viewClassic()" ng-class="{ 'selected' : views[1] === selected }">
+                <span class="{{views[1].classname}} view"></span>
+                {{views[1].name}}
+              </md-button>
+            </md-item-content>
+          </md-item>
+        </md-list>
+      </md-sidenav>
+
+      <!--
+          Use `flex` [below] to have the content area
+          fill the available horizontal display area on the right side
+      -->
+
+      <div layout="column" flex class="content-wrapper" id="content">
+        <md-toolbar ng-show="search.event.$">
+          <div class="md-toolbar-tools">
+            <span class="md-flex">Filter: {{ search.event.$ }}</span>
+          </div>
+        </md-toolbar>
+        <md-content layout="column" flex class="md-padding">
+          <md-subheader class="md-primary">Incomming Messages</md-subheader>
+          <md-list ng-controller="MessageListCtrl">
+            <md-item ng-repeat="item in items | filter:search">
+              <md-item-content md-highlight-text="search.event.$">
+                <details>
+                  <summary>{{item.event.data}}</summary>
+                  <pre>{{item | json}}</pre>
+                </details>
+              </md-item-content>
+            </md-item>
+          </md-list>
+        </md-content>
+        <md-button class="action actionBtn" ng-click="showActions($event)">
+          <span class="visuallyhidden">Actions</span>
+        </md-button>
+      </div>
+    </div>
+
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-route/angular-route.js"></script>
+    <script src="./bower_components/angular-aria/angular-aria.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.js"></script>
+    <script src="./bower_components/angular-material/angular-material.js"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./bower_components/angular-socket-io/socket.js"></script>
+
+    <script src="./app.js"></script>
+
+  </body>
+</html>
