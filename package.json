@@ -8,7 +8,7 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "postinstall": "bower update",
+    "postinstall": "./node_modules/bower/bin/bower install",
     "start": "node ./index.js",
     "prestart": "npm update"
   },
