@@ -36,7 +36,8 @@
     "q": "^1.1.2",
     "serve-static": "^1.8.1",
     "finalhandler": "^0.3.3",
-    "socket.io": "^1.0.0"
+    "socket.io": "^1.0.0",
+    "bower": "^1.3.12"
   },
   "bin": "./index.js"
 }
