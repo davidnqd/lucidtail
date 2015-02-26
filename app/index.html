@@ -73,6 +73,9 @@
           </div>
         </md-toolbar>
         <md-content layout="column" flex class="md-padding">
+          <md-button class="action actionBtn" ng-click="showActions($event)">
+            <span class="visuallyhidden">Actions</span>
+          </md-button>
           <md-subheader class="md-primary">Incomming Messages</md-subheader>
           <md-list ng-controller="MessageListCtrl">
             <md-item ng-repeat="item in items | filter:search">
@@ -85,9 +88,6 @@
             </md-item>
           </md-list>
         </md-content>
-        <md-button class="action actionBtn" ng-click="showActions($event)">
-          <span class="visuallyhidden">Actions</span>
-        </md-button>
       </div>
     </div>
 
