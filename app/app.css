@@ -163,6 +163,8 @@ md-bottom-sheet md-tabs .md-paginator {
 
 #content summary {
 	cursor: pointer;
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	white-space: nowrap;
+	font-family: "Lucida Console", Monaco, monospace;
 }
